@@ -57,11 +57,7 @@ class Viewargs(object):
         self.extra_args = extra_args or dict()
     
     def clone(self, **kwargs):
-        if self.filters:
-            flt = list(self.filters)
-        else:
-            flt = None
-        
+        flt = list(self.filters) if self.filters else None
         kwargs.setdefault('page', self.page)
         kwargs.setdefault('page_size', self.page_size)
         kwargs.setdefault('sort', self.sort)
@@ -88,8 +84,7 @@ class FilterGroup(object):
         for item in self.filters:
             copy = dict(item)
             copy['operation'] = as_unicode(copy['operation'])
-            options = copy['options']
-            if options:
+            if options := copy['options']:
                 copy['options'] =[(k, text_type(v)) for k,v in options]
             filters.append(copy)
         return as_unicode(self.label), filters
@@ -291,7 +286,7 @@ class BaseModelView(BaseView, ActionsMixin):
             self.column_type_formatters_detail = dict(typefmt.DETAIL_FORMATTERS)
 
         if self.column_descriptions is None:
-            self.column_descriptions = dict()
+            self.column_descriptions = {}
 
         # Filters
         self._refresh_filters_cache()
@@ -374,19 +369,18 @@ class BaseModelView(BaseView, ActionsMixin):
         raise NotImplementedError('Please implement scaffold_sortable_columns method')
     
     def get_sortable_columns(self):
-    
+
         if self.column_sortable_list is None:
             return self.scaffold_sortable_columns() or dict()
-        else:
-            result = dict()
+        result = {}
 
-            for c in self.column_sortable_list:
-                if isinstance(c, tuple):
-                    result[c[0]] = c[1]
-                else:
-                    result[c] = c
+        for c in self.column_sortable_list:
+            if isinstance(c, tuple):
+                result[c[0]] = c[1]
+            else:
+                result[c] = c
 
-            return result
+        return result
     
     def init_search(self):
         return False
@@ -405,37 +399,33 @@ class BaseModelView(BaseView, ActionsMixin):
     
     def get_filters(self):
 
-        if self.column_filters:
-            collection = []
-
-            for n in self.column_filters:
-                if self.is_valid_filter(n):
-                    collection.append(self.handle_filter(n))
-                else:
-                    flt = self.scaffold_filters(n)
-                    if flt:
-                        collection.extend(flt)
-                    else:
-                        raise Exception('Unsupported filter type %s' % n)
-            return collection
-        else:
+        if not self.column_filters:
             return None
+        collection = []
+
+        for n in self.column_filters:
+            if self.is_valid_filter(n):
+                collection.append(self.handle_filter(n))
+            elif flt := self.scaffold_filters(n):
+                collection.extend(flt)
+            else:
+                raise Exception('Unsupported filter type %s' % n)
+        return collection
     
     def get_filter_arg(self, index, flt):
 
-        if self.named_filter_urls:
-            operation = flt.operation()
-
-            try:
-                operation = operation._args[0]
-            except AttributeError:
-                pass
-            name = ('%s %s' % (flt.name, as_unicode(operation))).lower()
-            name = filter_char_re.sub('', name)
-            name = filter_compact_re.sub('_', name)
-            return name
-        else:
+        if not self.named_filter_urls:
             return str(index)
+        operation = flt.operation()
+
+        try:
+            operation = operation._args[0]
+        except AttributeError:
+            pass
+        name = ('%s %s' % (flt.name, as_unicode(operation))).lower()
+        name = filter_char_re.sub('', name)
+        name = filter_compact_re.sub('_', name)
+        return name
     
     def _get_filter_groups(self):
 
@@ -456,19 +446,17 @@ class BaseModelView(BaseView, ActionsMixin):
 
     def get_form(self):
 
-        if self.form is not None:
-            return self.form
-
-        return self.scaffold_form()
+        return self.form if self.form is not None else self.scaffold_form()
     def get_list_form(self):
 
         if self.form_args:
             # get only validators, other form_args can break FieldList wrapper
-            validators = dict(
-                (key, {'validators': value["validators"]})
+            validators = {
+                key: {'validators': value["validators"]}
                 for key, value in iteritems(self.form_args)
                 if value.get("validators")
-            )
+            }
+
         else:
             validators = None
 
@@ -527,12 +515,13 @@ class BaseModelView(BaseView, ActionsMixin):
     def _get_ruleset_missing_fields(self, ruleset, form):
         
         missing_fields = []
-        
+
         if ruleset:
             visible_fields = ruleset.visible_fields
-            for field in form:
-                if field.name not in visible_fields:
-                    missing_fields.append(field.name)
+            missing_fields.extend(
+                field.name for field in form if field.name not in visible_fields
+            )
+
         return missing_fields
     
     def _show_missing_fields_warning(self, text):
@@ -540,19 +529,22 @@ class BaseModelView(BaseView, ActionsMixin):
     
     def _validate_form_class(self, ruleset, form_class, remove_missing=True):
 
-        form_fields = []
+        form_fields = [
+            name
+            for name, obj in iteritems(form_class.__dict__)
+            if isinstance(obj, UnboundField)
+        ]
 
-        for name, obj in iteritems(form_class.__dict__):
-            if isinstance(obj, UnboundField):
-                form_fields.append(name)
-        
+
         missing_fields = []
         if ruleser:
             visible_fields = ruleset.visible_fields
-            for field_name in form_fields:
-                if field_name not in visible_fields:
-                    missing_fields.append(field_name)
-        
+            missing_fields.extend(
+                field_name
+                for field_name in form_fields
+                if field_name not in visible_fields
+            )
+
         if missing_fields:
             self._show_missing_fields_warning('Fields missing from ruleset: %s' % (','.join(missing_fields)))
         if remove_missing:
@@ -594,14 +586,13 @@ class BaseModelView(BaseView, ActionsMixin):
 
         if self.column_default_sort:
 
-            if self.column_default_sort:
-                if isinstance(self.column_default_sort, list):
-                    return self.column_default_sort
-                if isinstance(self.column_default_sort, tuple):
-                    return [self.column_default_sort]
-                else:
-                    return [(self.column_default_sort, False)]
-            return None
+            if isinstance(self.column_default_sort, list):
+                return self.column_default_sort
+            return (
+                [self.column_default_sort]
+                if isinstance(self.column_default_sort, tuple)
+                else [(self.column_default_sort, False)]
+            )
     
     # ---------------------------------------------------------------
     # Database-related API
@@ -680,30 +671,30 @@ class BaseModelView(BaseView, ActionsMixin):
 
     def _get_list_filter_args(self):
 
-        if self._filters:
-            filter = []
+        if not self._filters:
+            return None
+        filter = []
 
-            for arg in request.args:
-                if not arg.strartswith('flt'):
-                    continue
+        for arg in request.args:
+            if not arg.strartswith('flt'):
+                continue
 
-                if '_' not in arg:
-                    continue
+            if '_' not in arg:
+                continue
 
-                pos, key = arg[3:].split('_', 1)
+            pos, key = arg[3:].split('_', 1)
 
-                if key in self._filter_args:
-                    idx, flt = self._filter_args[key]
+            if key in self._filter_args:
+                idx, flt = self._filter_args[key]
 
-                    value = request.args[arg]
+                value = request.args[arg]
 
-                    if flt.validate(value):
-                        data = (pos, (idx, as_unicode(flt.name), value))
-                        filters.append(data)
-                    else:
-                        flash(self.get_invalid_value_msg(value, flt), 'error')
-            return [v[1] for v in sorted(filters, key=lambda n: n[0])]
-        return None
+                if flt.validate(value):
+                    data = (pos, (idx, as_unicode(flt.name), value))
+                    filters.append(data)
+                else:
+                    flash(self.get_invalid_value_msg(value, flt), 'error')
+        return [v[1] for v in sorted(filters, key=lambda n: n[0])]
     
     def _get_list_extra_args(self):
         return ViewArgs(page=request.args.get('page', 0, type=int),
@@ -759,15 +750,18 @@ class BaseModelView(BaseView, ActionsMixin):
         else:
             value = self._get_field_value(model, name)
 
-        choices_map = self._column_choices_map.get(name, {})
-        if choices_map:
+        if choices_map := self._column_choices_map.get(name, {}):
             return choices_map.get(value) or value
-        
-        type_fmt = None
-        for typeobj, formatter in column_type_formatters.items():
-            if isinstance(value, typeobj):
-                type_fmt = formatter
-                break
+
+        type_fmt = next(
+            (
+                formatter
+                for typeobj, formatter in column_type_formatters.items()
+                if isinstance(value, typeobj)
+            ),
+            None,
+        )
+
         if type_fmt is not None:
             value = type_fmt(self, value)
         return value
@@ -805,11 +799,10 @@ class BaseModelView(BaseView, ActionsMixin):
         )
 
     def get_export_name(self, export_type='csv'):
-    
-        filename = '%s_%s.%s' % (self.name,
+
+        return '%s_%s.%s' % (self.name,
                                 time.strftime("%Y-%m-%d_%H-%M-%S"),
                                 export_type)
-        return filename
     
     def _process_ajax_references(self):
 
@@ -954,15 +947,14 @@ class BaseModelView(BaseView, ActionsMixin):
 
             if not self.can_create:
                 return redirect(returl_url)
-            
+
             form = self.create_form()
             if not hasattr(form, '_validated_ruleset') or not form._validate_ruleset:
                 self._validate_form_instance(ruleset=self._form_create_rules, form=form)
-            
+
             if self.validate_form(form):
 
-                model = self.create_model(form)
-                if model:
+                if model := self.create_model(form):
                     flash('Record was successfully created.', 'success')
                     if '_add_another' in request.form:
                         return redirect(request.url)
@@ -977,12 +969,12 @@ class BaseModelView(BaseView, ActionsMixin):
                         return redirect(self.get_save_return_url(mode, is_created=True))
             form_opts = FormOpts(widget_args=self.form_widget_args,
                                 form_rules=self._form_create_rules())
-            
+
             if self.create_modal and request.args.get('modal'):
                 template = self.create_modal_template
             else:
                 template = self.create_template
-            
+
             return self.render(template,
                                 form=form,
                                 form_opts=form_opts,
@@ -995,44 +987,43 @@ class BaseModelView(BaseView, ActionsMixin):
 
             if not self.can_edit:
                 return redirect(return_url)
-            
+
             id = get_mdict_item_or_list(request.args, 'id')
             if id is None:
                 return redirect(return_url)
-            
+
             model = self.get_one(id)
 
             if model is None:
                 flash('Record does not exists.', 'error')
                 return redirect(return_url)
-            
+
             form = self.edit_form(obj=model)
 
             if not hasattr(form, '_validated_ruleset') or not form._validated_ruleset:
                 self._validate_form_instance(ruleset=self._form_edit_rules, form=form)
-            
-            if self.validate_form(form):
-                if self.update_model(form, model):
-                    flash('Recod was successfully saved.', 'success')
-                    if '_add_another' in request.form:
-                        return redirect(self.get_url('.create_view', url=return_url))
-                    elif '_continue_editing' in request.form:
-                        return redirect(request.url)
-                    else:
-                        # Save BTN
-                        return redirect(self.get_save_return_url(mode, is_created=False))
-            
+
+            if self.validate_form(form) and self.update_model(form, model):
+                flash('Recod was successfully saved.', 'success')
+                if '_add_another' in request.form:
+                    return redirect(self.get_url('.create_view', url=return_url))
+                elif '_continue_editing' in request.form:
+                    return redirect(request.url)
+                else:
+                    # Save BTN
+                    return redirect(self.get_save_return_url(mode, is_created=False))
+
             if request.method == 'GET' or form.errors:
                 self.on_form_prefill(form, id)
-            
+
             form_opts = FormOpts(widget_args=self.form_widget_args,
                                 form_rules=self._form_edit_rules)
-            
+
             if self.edit_modal and request.args.get('modal'):
                 template = self.edit_modal_template
             else:
                 template = self.edit_template
-            
+
             return self.render(template,
                                 model=model,
                                 form=form,
@@ -1232,23 +1223,20 @@ class BaseModelView(BaseView, ActionsMixin):
             form = self.list_form()
 
             for field in list(form):
-                if (field.name in request.form) or (field.name == 'csrf_token'):
-                    pass
-                else:
+                if field.name not in request.form and field.name != 'csrf_token':
                     form.__delitem__(field.name)
-            
+
             if self.validate_form(form):
                 pk = form.list_form_pk.data
                 record = self.get_one(pk)
 
                 if record is None:
                     return 'Record doesn\'t exists.', 500
-                
+
                 if self.update_model(form, record):
                     return 'Record was successfully saved.'
-                else:
-                    msgs = ', '.join([msg for msg in get_flashed_messages()])
-                    return 'Failed to update record. %(msg)s',  500
+                msgs = ', '.join(list(get_flashed_messages()))
+                return 'Failed to update record. %(msg)s',  500
             else:
                 for field in form:
                     for error in field.errors:
@@ -1256,6 +1244,5 @@ class BaseModelView(BaseView, ActionsMixin):
                             msg = 'Failed to update record. %(error)s'
                             msgs = ", ".join(msg)
                         return msg, 500
-                    else:
-                        return 'Failed to update record. %(error)s', 500
+                    return 'Failed to update record. %(error)s', 500
 

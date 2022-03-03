@@ -20,7 +20,7 @@ def recurse_validate(data, template, path):
     dictionary_type_keys = {key for key, value in template.items()
                             if isinstance(value, dict)}
     for key in dictionary_type_keys:
-        sub_path = path + '.' + str(key)
+        sub_path = f'{path}.{str(key)}'
         sub_template = template[key]
         sub_data = data[key]
         is_ok, err_msg = recurse_validate(sub_data, sub_template, sub_path)

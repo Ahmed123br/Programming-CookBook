@@ -7,10 +7,10 @@ def ref_count(address):
 
 
 def object_by_id(object_id):
-    for obj in gc.get_objects():
-        if id(obj) == object_id:
-            return 'Object exists'
-    return 'Not Found'
+    return next(
+        ('Object exists' for obj in gc.get_objects() if id(obj) == object_id),
+        'Not Found',
+    )
 
 # Define two classes that we will use to create a circular reference
 # Class A's constructor will create an instance of class B and pass itself to class B's constructor

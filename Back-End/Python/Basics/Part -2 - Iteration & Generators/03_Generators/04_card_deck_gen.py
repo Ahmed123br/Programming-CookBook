@@ -17,16 +17,14 @@ class CardDeck:
     def card_gen():
         for suit in CardDeck.SUITS:
             for rank in CardDeck.RANKS:
-                card = Card(rank, suit)
-                yield card
+                yield Card(rank, suit)
 
     @staticmethod
     def reversed_card_gen():
         for suit in reversed(CardDeck.SUITS):
             for rank in reversed(CardDeck.RANKS):
-                card = Card(rank, suit)
-                yield card
+                yield Card(rank, suit)
 
 
 rev = reversed(CardDeck())
-print([card for card in rev])
+print(list(rev))

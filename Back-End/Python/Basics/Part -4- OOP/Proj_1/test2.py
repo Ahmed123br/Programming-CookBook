@@ -44,7 +44,7 @@ class TestAccount(unittest.TestCase):
         self.assertEqual(account_number, a.account_number)
         self.assertEqual(first_name, a.first_name)
         self.assertEqual(last_name, a.last_name)
-        self.assertEqual(first_name + ' ' + last_name, a.full_name)
+        self.assertEqual(f'{first_name} {last_name}', a.full_name)
         self.assertEqual(tz, a.timezone)
         self.assertEqual(balance, a.balance)
 

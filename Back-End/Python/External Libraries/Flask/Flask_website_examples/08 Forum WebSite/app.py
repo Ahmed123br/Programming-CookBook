@@ -4,7 +4,7 @@ from flask_migrate import Migrate
 from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, current_user, login_required
 from flask_security.forms import RegisterForm
 from wtforms import StringField, TextAreaField
-from flask_wtf import FlaskForm 
+from flask_wtf import FlaskForm
 from datetime import datetime
 import os
 
@@ -16,7 +16,7 @@ base_dir = os.path.join(
             app.config['DATABASE_FILE']
             )
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + base_dir
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{base_dir}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.urandom(16)
 app.config['DEBUG'] = True
@@ -66,9 +66,11 @@ class Thread(db.Model):
     replies = db.relationship('Reply', backref='thread', lazy='dynamic')
 
     def last_post_date(self):
-        last_reply = Reply.query.filter_by(thread_id=self.id).order_by(Reply.id.desc()).first()
-
-        if last_reply:
+        if (
+            last_reply := Reply.query.filter_by(thread_id=self.id)
+            .order_by(Reply.id.desc())
+            .first()
+        ):
             return last_reply.date_created
 
         return self.date_created

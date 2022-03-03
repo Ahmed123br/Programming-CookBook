@@ -23,10 +23,7 @@ point_2 = Point(3, 5)
 
 class Polygon:
     def __init__(self, *pts):
-        if pts:
-            self._pts = [Point(*pt) for pt in pts]
-        else:
-            self._pts = []
+        self._pts = [Point(*pt) for pt in pts] if pts else []
 
     def __str__(self):
         return f'These Polygon is made of these points{self._pts} '

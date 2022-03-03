@@ -46,11 +46,10 @@ print(reduce(lambda a, b: a * b, l))
 def fact(n):
     if n <=1:
         return 1
-    else:
-        result = 1
-        for i in range(2, n+1):
-            result *= i
-        return result
+    result = 1
+    for i in range(2, n+1):
+        result *= i
+    return result
 
 
 print(fact(1), fact(2), fact(3), fact(4), fact(5))
@@ -58,10 +57,7 @@ print(fact(1), fact(2), fact(3), fact(4), fact(5))
 
 # RECURSIVE
 def fact(n):
-    if n <=1:
-        return 1
-    else:
-        return n * fact(n-1)
+    return 1 if n <=1 else n * fact(n-1)
 
 print(fact(1), fact(2), fact(3), fact(4), fact(5))
 # >>> (1, 2, 6, 24, 120)

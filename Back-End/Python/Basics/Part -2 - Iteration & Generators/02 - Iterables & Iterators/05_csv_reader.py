@@ -1,6 +1,5 @@
 with open('cars.csv') as file:
-    row_index = 0
-    for line in file:
+    for row_index, line in enumerate(file):
         if row_index == 0:
             # header row
             headers = line.strip('\n').split(';')
@@ -13,4 +12,3 @@ with open('cars.csv') as file:
             # data rows
             data = line.strip('\n').split(';')
             print(data)
-        row_index += 1

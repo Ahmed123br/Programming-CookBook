@@ -41,7 +41,7 @@ def build_sample_db():
         user.type = random.choice(AVAILABLE_USER_TYPES)[0]
         user.first_name = first_names[i]
         user.last_name = last_names[i]
-        user.email = first_names[i].lower() + "@example.com"
+        user.email = f'{first_names[i].lower()}@example.com'
 
         user.website = "https://www.example.com"
         user.ip_address = "127.0.0.1"
@@ -120,12 +120,12 @@ doloribus asperiores repellat."
     db.session.add(trunk)
     for i in range(5):
         branch = Tree()
-        branch.name = "Branch " + str(i + 1)
+        branch.name = f"Branch {str(i + 1)}"
         branch.parent = trunk
         db.session.add(branch)
         for j in range(5):
             leaf = Tree()
-            leaf.name = "Leaf " + str(j + 1)
+            leaf.name = f"Leaf {str(j + 1)}"
             leaf.parent = branch
             db.session.add(leaf)
 

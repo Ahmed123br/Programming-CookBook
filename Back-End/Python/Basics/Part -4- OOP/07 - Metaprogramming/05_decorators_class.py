@@ -160,7 +160,7 @@ import inspect
 
 def class_logger(cls):
     for name, obj in vars(cls).items():
-        if isinstance(obj, staticmethod) or isinstance(obj, classmethod):
+        if isinstance(obj, (staticmethod, classmethod)):
             type_ = type(obj)
             original_func = obj.__func__
             print(f'decorating {type_.__name__} method', original_func)

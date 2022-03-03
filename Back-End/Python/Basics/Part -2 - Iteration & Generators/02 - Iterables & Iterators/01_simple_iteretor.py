@@ -11,10 +11,9 @@ class Squares:
         print('calling __next__')
         if self.i >= self.length:
             raise StopIteration
-        else:
-            result = self.i ** 2
-            self.i += 1
-            return result
+        result = self.i ** 2
+        self.i += 1
+        return result
 
 sq = Squares(3)
 

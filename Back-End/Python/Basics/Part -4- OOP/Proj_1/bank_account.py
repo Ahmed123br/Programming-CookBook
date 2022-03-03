@@ -63,7 +63,7 @@ class BankAccount:
 
     @property
     def account_number(self):
-        self._account_number = [str(randint(0, 9)) for num in range(6)]
+        self._account_number = [str(randint(0, 9)) for _ in range(6)]
         return ''.join(self._account_number)
 
     @classmethod
@@ -79,15 +79,14 @@ You have {balance} but transaction required {value}.
     def check_transaction(cls, balance, value):
         if (balance + value) >= 0:
             return balance + value
-        else:
-            cls.declined(balance, value)
-            return 'Declined'
+        cls.declined(balance, value)
+        return 'Declined'
 
     @classmethod
     def commit_transaction(cls, transaction):
         get_code = cls.transaction_map(transaction)
         with open('log.txt', 'a') as f:
-            f.writelines(get_code + ', ' + str(transaction) + '\n') # Writes Transaction_code in a log
+            f.writelines(f'{get_code}, {str(transaction)}' + '\n')
         return get_code
 
     @classmethod

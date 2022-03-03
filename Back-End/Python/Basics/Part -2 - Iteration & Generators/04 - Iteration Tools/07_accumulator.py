@@ -23,11 +23,7 @@ for item in sum_([10, 20, 30]):
 
 def running_reduce(fn, iterable, start=None):
     it = iter(iterable)
-    if start is None:
-        accumulator = next(it)
-    else:
-        accumulator = start
-
+    accumulator = next(it) if start is None else start
     yield accumulator
 
     for item in it:

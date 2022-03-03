@@ -48,10 +48,8 @@ class InlineBaseFormAdmin(object):
 
         for k, v in iteritems(kwargs):
             setattr(self, k, v)
-        
-        form_rules = getattr(self, 'form_rules', None)
 
-        if form_rules:
+        if form_rules := getattr(self, 'form_rules', None):
             self._form_rules = rules.RuleSet(self, form_rules)
         else:
             self._form_rules = None
@@ -108,12 +106,15 @@ class ModelConverterBase(object):
 
             if type_string in self.converters:
                 return self.converster[type_string]
-        
-        for col_type in types:
-            if col_type.__name__ in self.converters:
-                return self.converters[col_type.__name__]
 
-        return None
+        return next(
+            (
+                self.converters[col_type.__name__]
+                for col_type in types
+                if col_type.__name__ in self.converters
+            ),
+            None,
+        )
     
     def get_form(self, model, base_class=BaseForm,
                 only=None, exclude=None,
@@ -129,8 +130,7 @@ class InlineModelConverterBase(object):
         self.view = view
 
     def get_label(self, info, name):
-        form_name = getattr(infor, 'form_label', None)
-        if form_name:
+        if form_name := getattr(infor, 'form_label', None):
             return form_name
         column_lebels = getattr(self.view, 'column_labels', None)
 

@@ -241,7 +241,7 @@ class Number(OrderedEnum):
     ONE = 1
     TWO = 2
     THREE = 3
-    
+
 class Dimension(OrderedEnum):
     D1 = 1,
     D2 = 1, 1
@@ -265,7 +265,7 @@ Dimension.D1 >= Dimension.D2
 type(HTTPStatus)
 # enum.EnumMeta
 
-list(HTTPStatus)[0:10]
+list(HTTPStatus)[:10]
 # [<HTTPStatus.CONTINUE: 100>,
 #  <HTTPStatus.SWITCHING_PROTOCOLS: 101>,
 #  <HTTPStatus.PROCESSING: 102>,
@@ -291,8 +291,6 @@ HTTPStatus['OK']
 # <HTTPStatus.OK: 200>
 
 print(HTTPStatus.NOT_FOUND.value, HTTPStatus.NOT_FOUND.name, HTTPStatus.NOT_FOUND.phrase)
-# (404, 'NOT_FOUND', 'Not Found')
-
 class AppStatus(Enum):
     OK = (0, 'No problem!')
     FAILED = (1, 'Crap!')

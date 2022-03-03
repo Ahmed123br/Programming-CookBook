@@ -22,7 +22,7 @@ print(hands)
 
 index = 0
 for card in card_deck(): # Print the Whole Dec.
-    index = index % 4
+    index %= 4
     print(index)
     hands[index].append(card)
     index += 1

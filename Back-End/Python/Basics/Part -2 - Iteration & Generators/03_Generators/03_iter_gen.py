@@ -3,8 +3,8 @@ def squares_gen(n):
         yield i ** 2
 
 sq = squares_gen(5)
-print([num for num in sq])
-print([num for num in sq])
+print(list(sq))
+print(list(sq))
 
 # [0, 1, 4, 9, 16]
 # []
@@ -23,8 +23,8 @@ class Squares:
 
 sq = Squares(5)
 
-print([num for num in sq])
-print([num for num in sq])
+print(list(sq))
+print(list(sq))
 
 # [0, 1, 4, 9, 16]
 # [0, 1, 4, 9, 16]

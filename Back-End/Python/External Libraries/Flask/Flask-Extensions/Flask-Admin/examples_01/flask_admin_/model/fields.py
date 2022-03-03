@@ -22,14 +22,13 @@ class InlineFieldList(FieldList):
         super(InlineFieldList, self).__init__(*args, **kwargs)
     
     def __call__(self, **kwargs):
-        meta = getattr(self, 'meta', None)
-        if meta:
+        if meta := getattr(self, 'meta', None):
             template = self.unbound_field.bind(form=None, name='', _meta=meta)
         else:
             template = self.unbound_field.bind(form=None, name='')
         if isinstance(template, FormField):
             template.separator = ''
-        
+
         template.process(None)
         return self.widget(self,
                         template=template,
@@ -49,15 +48,17 @@ class InlineFieldList(FieldList):
         return res
     
     def validate(self, form, extra_validators=tuple()):
-        self.errors = []
+        self.errors = [
+            subfield.errors
+            for subfield in self.entries
+            if not self._should_delete(subfield) and not subfield.validate(form)
+        ]
 
-        for subfield in self.entries:
-            if not self._should_delete(subfield) and not subfield.validate(form):
-                self.errors.append(subfield.errors)
+
         chain = itertools.chain(self.validators, extra_validators)
         self._run_validation_chain(form, chain)
-        
-        return len(self.errors) == 0
+
+        return not self.errors
     
     def should_delete(self, field):
         return getattr(field, '_should_delete', False)

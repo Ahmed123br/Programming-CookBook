@@ -13,14 +13,24 @@ def match_keys(data, valid, path):
 
     if missing_keys or extra_keys:
         is_ok = False
-        missing_msg = ('missing keys:' +
-                       ','.join({path + '.' + str(key)
-                                 for key in missing_keys})
-                      ) if missing_keys else ''
-        extras_msg = ('extra keys:' +
-                     ','.join({path + '.' + str(key)
-                               for key in extra_keys})
-                     ) if extra_keys else ''
+        missing_msg = (
+            (
+                'missing keys:'
+                + ','.join({f'{path}.{str(key)}' for key in missing_keys})
+            )
+            if missing_keys
+            else ''
+        )
+
+        extras_msg = (
+            (
+                'extra keys:'
+                + ','.join({f'{path}.{str(key)}' for key in extra_keys})
+            )
+            if extra_keys
+            else ''
+        )
+
         return False, ' '.join((missing_msg, extras_msg))
     else:
         return True, None
@@ -34,15 +44,17 @@ print(is_ok, err_msg)
 
 def match_types(data, template, path):
     for key, value in template.items():
-        if isinstance(value, dict):
-            template_type = dict
-        else:
-            template_type = value
+        template_type = dict if isinstance(value, dict) else value
         data_value = data.get(key, object())
         if not isinstance(data_value, template_type):
-            err_msg = ('incorrect type: ' + path + '.' + key +
-                       ' -> expected ' + template_type.__name__ +
-                       ', found ' + type(data_value).__name__)
+            err_msg = (
+                (
+                    (f'incorrect type: {path}.{key}' + ' -> expected ')
+                    + template_type.__name__
+                )
+                + ', found '
+            ) + type(data_value).__name__
+
             return False, err_msg
     return True, None
 

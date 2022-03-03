@@ -34,7 +34,7 @@ basedir = op.join(op.abspath(op.dirname(__file__)), app.config['DATABASE_FILE'])
 
 # app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 app.config['SECRET_KEY']  = my_secret
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + basedir
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{basedir}'
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -288,9 +288,9 @@ def buil_sample_db():
         user = User()
         user.first_name = first_names[i]
         user.last_name = last_names[i]
-        user.email = user.first_name.lower() + "@example.com"
-        tmp = ''.join(random.choice(string.digits) for i in range(10))
-        user.phone = "(" + tmp[0:3] + ") " + tmp[3:6] + " " + tmp[6::]
+        user.email = f'{user.first_name.lower()}@example.com'
+        tmp = ''.join(random.choice(string.digits) for _ in range(10))
+        user.phone = "(" + tmp[:3] + ") " + tmp[3:6] + " " + tmp[6::]
         user.city = locations[i][0]
         user.country = locations[i][1]
         db.session.add(user)
@@ -299,15 +299,15 @@ def buil_sample_db():
     for name in images:
         image = Image()
         image.name = name
-        image.path = name.lower() + ".jpg"
+        image.path = f'{name.lower()}.jpg'
         db.session.add(image)
-    
+
     for i in [1, 2, 3]:
         file = File()
-        file.name = 'Example ' + str(i)
-        file.path = 'example_' + str(i) + '.pdf'
+        file.name = f'Example {str(i)}'
+        file.path = f'example_{str(i)}.pdf'
         db.session.add(file)
-    
+
     sample_text = "<h2>This is a test</h2>" + \
     "<p>Create HTML content in a text area field with the help of <i>WTForms</i> and <i>CKEditor</i>.</p>"
     db.session.add(Page(name="Test Page", text=sample_text))

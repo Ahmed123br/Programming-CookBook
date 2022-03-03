@@ -13,10 +13,7 @@ if not PY2:
     iteritems = lambda d: iter(d.items())
     filter_list = lambda f, l: list(filter(f, l))
     def as_unicode(s):
-        if isinstance(s, bytes):        
-            return s.decode('utf-8')
-
-        return str(s)
+        return s.decode('utf-8') if isinstance(s, bytes) else str(s)
     
     def csv_encode(s):
         ''' Returns unicode string expected by Python 3's csv module '''
@@ -35,9 +32,7 @@ else:
     filter_list = filter
 
     def as_unicode(s):
-        if isinstance(s, str):
-            return s.decode('utf-8')
-        return unicode(s)
+        return s.decode('utf-8') if isinstance(s, str) else unicode(s)
     
     def csv_encode(s):
         return as_unicode(s).encode('utf-8')

@@ -27,13 +27,12 @@ class CSVGenerator:
                 header = top.split(',')
                 header = ['_'.join(column.split()).lower()
                           for column in header]
-                CardParkTicket = namedtuple('CarParkTicket', header)
-                return CardParkTicket
+                return namedtuple('CarParkTicket', header)
         yield get_header()
 
     @staticmethod
     def convert_data(data_list):
-        converted_list = list()
+        converted_list = []
         for item in data_list:
             try:
                 value = datetime.strptime(item, '%d/%m/%Y')  # Converts Data into Datetime Object
@@ -63,21 +62,19 @@ class CSVGenerator:
                 my_row = get_str.split(',')  # Make it back to List
                 my_row = self.convert_data(my_row)
                 try:
-                    data = header(*my_row)
-                    yield data
+                    yield header(*my_row)
                 except TypeError:  # Catch if row has more than 9 items
                     if len(my_row) > 9:
-                        for item in range(len(my_row) - 9):  # iterates over the difference of len
+                        for _ in range(len(my_row) - 9):
                             remove_item = my_row.pop()  # removes last item
                             my_row[-1] += remove_item  # attach it to the last one
-                            data = header(*my_row)
-                            yield data
+                            yield header(*my_row)
             except StopIteration:
                 break
 
   # Get vehivle_make per violation_description
     def get_violation(self):
-        brand = dict()
+        brand = {}
         for row in self:
             if brand.get(row.vehicle_make):
                 brand[row.vehicle_make] += bool(row.violation_description)
@@ -92,8 +89,7 @@ class CSVGenerator:
             if max_val[1] < brand[i]:
                 max_val[1] = brand[i]
                 max_val[0] = i
-        result = {max_val[0] : max_val[1]}
-        return result
+        return {max_val[0] : max_val[1]}
 
 
 

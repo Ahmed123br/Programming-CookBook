@@ -1,6 +1,6 @@
 class Person:
     def __getattr__(self, name):
-        alt_name = '_' + name
+        alt_name = f'_{name}'
         print(f'Could not find {name}, trying {alt_name}...')
         try:
             return super().__getattribute__(alt_name)
@@ -22,7 +22,7 @@ class Person:
         
     def __getattr__(self, name):
         print(f'Could not find {name}')
-        alt_name = '_' + name
+        alt_name = f'_{name}'
         try:
             return super().__getattribute__(alt_name)
         except AttributeError:

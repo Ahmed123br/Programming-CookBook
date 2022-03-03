@@ -19,12 +19,11 @@ print(next(gen_my_func))
 def squares(sentinel):
     i = 0
     while True:
-        if i < sentinel:
-            result = i**2
-            i += 1
-            yield result
-        else:
+        if i >= sentinel:
             return 'all done'
+        result = i**2
+        i += 1
+        yield result
 sq = squares(3)
 print(next(sq))
 print(next(sq))
@@ -38,11 +37,10 @@ print(next(sq))
 def squares(sentinel):
     i = 0
     while True:
-        if i < sentinel:
-            yield i**2
-            i += 1 # note how we can incremenet **after** the yield
-        else:
+        if i >= sentinel:
             return 'all done!'
+        yield i**2
+        i += 1 # note how we can incremenet **after** the yield
 
 for num in squares(5):
     print(num)

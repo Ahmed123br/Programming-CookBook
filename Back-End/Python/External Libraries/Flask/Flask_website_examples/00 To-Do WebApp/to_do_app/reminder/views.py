@@ -15,18 +15,17 @@ def write_reminder():
     tags = db.session.query(Tag).filter_by(id=Tag.id).all()
     tag_list = [(tag.id, tag.tag) for tag in tags]
     form.tag.choices = tag_list 
-    
-    if request.method == 'POST':    
-        if form.validate_on_submit():
-            new_rem = Reminder(title=form.title.data,
-                            text=form.body.data,
-                            tag_id=form.tag.data
-                            )        
-            db.session.add(new_rem)
-            db.session.commit()
-            flash(f'New Reminder created, title {new_rem.title}')
-            return redirect(url_for('core.index'))     
-               
+
+    if request.method == 'POST' and form.validate_on_submit():
+        new_rem = Reminder(title=form.title.data,
+                        text=form.body.data,
+                        tag_id=form.tag.data
+                        )
+        db.session.add(new_rem)
+        db.session.commit()
+        flash(f'New Reminder created, title {new_rem.title}')
+        return redirect(url_for('core.index'))     
+
     return render_template('reminder/write_reminder.html', form=form)
 
 # Read
@@ -75,6 +74,4 @@ def delete_reminder(reminder_id):
             db.session.delete(reminder)
             db.session.commit()
             return redirect(url_for('core.index'))
-            flash('Reminder  Deleted')
-
     return redirect(url_for('core.index'))

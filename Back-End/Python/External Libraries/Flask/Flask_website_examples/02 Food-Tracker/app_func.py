@@ -16,12 +16,23 @@ def def_food_val(log_results):
 
 def sum_calories(protein, carbohydrates, fat):
     
-    calories = protein * 4 + carbohydrates * 4 + fat * 9
-    return calories
+    return protein * 4 + carbohydrates * 4 + fat * 9
 
 def get_month(date):
-    month_list = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-    return month_list
+    return [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+    ]
 
 # Query Month by User's selection, return the query total cleared up my the month choosen
 def select_month(arg, date_results):

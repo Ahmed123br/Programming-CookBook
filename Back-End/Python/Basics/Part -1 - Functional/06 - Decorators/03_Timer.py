@@ -28,7 +28,7 @@ def timed(num_reps=1):
         @wraps(fn)
         def inner(*args, **kwargs):
             total_elapsed = 0
-            for i in range(num_reps):
+            for _ in range(num_reps):
                 start = perf_counter()
                 result = fn(*args, **kwargs)
                 end = perf_counter()
@@ -43,10 +43,7 @@ def timed(num_reps=1):
 # Using Recursion
 def calc_recursive_fib(n):
 
-    if n <=2:
-        return 1
-    else:
-        return calc_recursive_fib(n-1) + calc_recursive_fib(n-2)
+    return 1 if n <=2 else calc_recursive_fib(n-1) + calc_recursive_fib(n-2)
 
 print(calc_recursive_fib(10))
 # 55
@@ -74,7 +71,7 @@ def fib_loop(n):
     fib_1 = 1
     fib_2 = 1
 
-    for i in range(3, n+1):
+    for _ in range(3, n+1):
         fib_1, fib_2 = fib_2, fib_1 + fib_2
     return fib_2
 
@@ -93,10 +90,10 @@ def fib_reduce(n):
 
 print(f'With Fib Reduce Func --> {fib_reduce(10)}')
 
-for i in range(10):
+for _ in range(10):
     result = fib_loop(10)
 
-for i in range(10):
+for _ in range(10):
     result = fib_reduce(10)
 
 
@@ -118,4 +115,4 @@ def timer(func):
 @timer
 def waste_some_time(num_times):
     for _ in range(num_times):
-        sum([i**2 for i in range(10000)])
+        sum(i**2 for i in range(10000))

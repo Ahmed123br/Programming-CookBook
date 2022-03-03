@@ -56,7 +56,7 @@ counted_mult(2, 3, 4)
 
 # 3
 
-counters = dict()
+counters = {}
 
 
 def counter(fn):
@@ -91,7 +91,7 @@ def counter(fn, counters):
         return fn(*args, **kwargs)
     return inner
 
-func_counters = dict()
+func_counters = {}
 counted_add = counter(add, func_counters)
 counted_mult = counter(mult, func_counters)
 counted_add.__code__.co_freevars

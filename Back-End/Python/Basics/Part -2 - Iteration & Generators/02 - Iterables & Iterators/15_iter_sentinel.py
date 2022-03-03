@@ -24,15 +24,12 @@ class CounterIterator:
         return self
 
     def __next__(self):
-        if self.is_consumed:
-            raise StopIteration
-        else:
+        if not self.is_consumed:
             result = self.counter_callable()
-            if result == self.sentinel:
-                self.is_consumed = True
-                raise StopIteration
-            else:
+            if result != self.sentinel:
                 return result
+            self.is_consumed = True
+        raise StopIteration
 
 
 

@@ -55,11 +55,10 @@ def fact(n: 'int >= 0') -> int:
         the factorial of n
     '''
 
-    if n < 0:
-        '''Note that this is not part of the docstring!'''
-        return 1
-    else:
+    if n >= 0:
         return n * fact(n - 1)
+    '''Note that this is not part of the docstring!'''
+    return 1
 
 help(fact)
 

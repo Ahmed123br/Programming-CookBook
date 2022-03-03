@@ -16,7 +16,7 @@ class ObsoleteAttr(object):
     def __init__(self, new_name, old_name, default):
         self.new_name = new_name
         self.old_name = old_name
-        self.cache = '_cache_' + new_name
+        self.cache = f'_cache_{new_name}'
         self.default = default
     
     def __get__(self, obj, objtype=None):

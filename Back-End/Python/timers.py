@@ -5,7 +5,7 @@ import time
 
 def time_it(fn, *args, rep=5, **kwargs):
     start = time.perf_counter()
-    for i in range(rep):
+    for _ in range(rep):
         fn(*args, **kwargs)
     end = time.perf_counter()
     return (((end - start) / rep), (end - start))
@@ -13,11 +13,7 @@ def time_it(fn, *args, rep=5, **kwargs):
 # print(time_it(print, 1, 2, 3, 4, sep='-', end=' *** '))
 
 def compute_powers_1(n, *, start=1, end):
-    # using a for loop
-    results = []
-    for i in range(start, end):
-        results.append(n**i)
-    return results
+    return [n**i for i in range(start, end)]
 
 def compute_powers_2(n, *, start=1, end):
     # using a list comprehension
@@ -26,7 +22,7 @@ def compute_powers_2(n, *, start=1, end):
 
 def compute_powers_3(n, *, start=1, end):
     # using a generator expression
-    return list((n**i for i in range(start, end)))
+    return [n**i for i in range(start, end)]
 
 # compute_powers_1(2, end=5)
 # compute_powers_2(2, end=5)
@@ -84,7 +80,7 @@ def timed(num_reps=1):
         @wraps(fn)
         def inner(*args, **kwargs):
             total_elapsed = 0
-            for i in range(num_reps):
+            for _ in range(num_reps):
                 start = perf_counter()
                 result = fn(*args, **kwargs)
                 end = perf_counter()
@@ -100,4 +96,4 @@ def timed(num_reps=1):
 @timer
 def waste_some_time(num_times):
     for _ in range(num_times):
-        sum([i**2 for i in range(10000)])
+        sum(i**2 for i in range(10000))

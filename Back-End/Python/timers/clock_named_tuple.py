@@ -35,7 +35,7 @@ def add_time(start, duration, start_weekday=None):
         else:
             new_weekday = False
         # Figure out whether is AM or PM
-        for i in range(clock):
+        for _ in range(clock):
             if end_period[-1].lower() == 'am':
                 end_period.append('PM')
             else:

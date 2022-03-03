@@ -56,7 +56,4 @@ class JSONDecoderEx(json.JSONDecoder):
     @classmethod
     def new_scanstring(cls, s, end, strict=True):
         (s, end) = json.decoder.scanstring(s, end, strict)
-        if cls.datetime_regex.match(s):
-            return (parse(s), end)
-        else:
-            return (s, end)
+        return (parse(s), end) if cls.datetime_regex.match(s) else (s, end)

@@ -47,11 +47,10 @@ def process_time_and_tz(self, date_f: datetime = False, date_t: datetime = False
 
     if date_t:
         actual_time_to = pytz.utc.localize(date_t).astimezone(user_timezone)
-        stringed_to = datetime.strftime(actual_time_to, DEFAULT_SERVER_DATETIME_FORMAT)
     else:  # Most probably it function was called from a Cron
         date_to = fields.datetime.now()
         actual_time_to = pytz.utc.localize(date_to).astimezone(user_timezone)
-        stringed_to = datetime.strftime(actual_time_to, DEFAULT_SERVER_DATETIME_FORMAT)
+    stringed_to = datetime.strftime(actual_time_to, DEFAULT_SERVER_DATETIME_FORMAT)
     if date_f:
         actual_time_from = pytz.utc.localize(date_f).astimezone(user_timezone)
         stringed_from = datetime.strftime(actual_time_from, DEFAULT_SERVER_DATETIME_FORMAT)

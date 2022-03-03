@@ -63,9 +63,9 @@ class Test(unittest.TestCase):
         self.assertNotEqual(mini_serpy, real_serpy)
         equal_ = []
         not_equal = []
-        m_serpy_l = [c for c in mini_serpy.__mro__]
+        m_serpy_l = list(mini_serpy.__mro__)
         # [<class 'serpy_mini.Serializer'>, < class 'serpy_mini.SerializerBase' >, < class 'serpy_mini.Field' >, < class 'object' >]
-        real_serpy_l = [c2 for c2 in real_serpy.__mro__]
+        real_serpy_l = list(real_serpy.__mro__)
         # [<class 'serpy_.Serializer' >, < class 'serpy_.SerializerBase' >, < class 'serpy_.Field' >, < class 'object' >]
         for c in mini_serpy.__mro__:
             for c2 in real_serpy.__mro__:
@@ -74,8 +74,6 @@ class Test(unittest.TestCase):
                     self.assertEqual(c.__name__, c2.__name__)
                 except AssertionError as err:
                    pass
-                else:
-                    pass
                 if c.__name__ == c2.__name__:
                     equal_.append((c.__name__, c2.__name__))
                 else:
@@ -297,8 +295,7 @@ class TestSerializer(unittest.TestCase):
 def run_tests(test_class):
     suite = unittest.TestLoader().loadTestsFromTestCase(test_class)
     runner = unittest.TextTestRunner(verbosity=2)
-    result = runner.run(suite)
-    return result
+    return runner.run(suite)
 
 
 if __name__ == '__main__':

@@ -2,17 +2,12 @@ current_list = []
 accumulated_list = []
 
 def sum_recursive(current_number, accumulated_sum):
-    # Base Case
-    # Return the final state
     if current_number == 11:
         return accumulated_sum
 
-    # Recursive case
-    # Thread the state through the recursive call
-    else:
-        current_list.append(current_number)
-        accumulated_list.append(accumulated_sum)
-        return sum_recursive(current_number + 1, accumulated_sum + current_number)
+    current_list.append(current_number)
+    accumulated_list.append(accumulated_sum)
+    return sum_recursive(current_number + 1, accumulated_sum + current_number)
 
 print(sum_recursive(1, 0))
 step_list = list(zip(current_list, accumulated_list))

@@ -6,10 +6,9 @@ def memoizer(fn):
         key = (*args, frozenset(kwargs.items()))
         if key in cache:
             return cache[key]
-        else:
-            result = fn(*args, **kwargs)
-            cache[key] = result
-            return result
+        result = fn(*args, **kwargs)
+        cache[key] = result
+        return result
     return inner
 
 
@@ -35,10 +34,9 @@ def memoizer(fn):
         key = frozenset(args) | frozenset(kwargs.items())
         if key in cache:
             return cache[key]
-        else:
-            result = fn(*args, **kwargs)
-            cache[key] = result
-            return result
+        result = fn(*args, **kwargs)
+        cache[key] = result
+        return result
     return inner
 
 

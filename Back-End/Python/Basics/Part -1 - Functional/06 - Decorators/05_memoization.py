@@ -138,6 +138,4 @@ def cache(func):
 @cache
 @count_calls
 def fibonacci(num):
-    if num < 2:
-        return num
-    return fibonacci(num - 1) + fibonacci(num - 2)
+    return num if num < 2 else fibonacci(num - 1) + fibonacci(num - 2)

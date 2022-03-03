@@ -2,15 +2,12 @@ from copy import deepcopy
 
 l1 = [1, 2, 3]
 # For Loop
-l1_copy = []
-for item in l1:
-    l1_copy.append(item)
-
+l1_copy = list(l1)
 print(l1_copy)
 
 # List Comprehension
 l1 = [1, 2, 3]
-ly_copy = [item for item in l1]
+ly_copy = list(l1)
 print(ly_copy)
 
 # copy Metod

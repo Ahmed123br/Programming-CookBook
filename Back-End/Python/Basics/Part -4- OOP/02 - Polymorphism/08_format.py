@@ -19,7 +19,7 @@ class Person:
         return f'Person(name={self.name}, dob={dob})'
 
 p = Person('Alex', date(1900, 10, 20))
-print(str(p))
+print(p)
 # __str__ called...
 # Person(Alex)
 print(repr(p))

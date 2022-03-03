@@ -157,8 +157,7 @@ class NestedContexts:
 
     def enter_context(self, ctx):
         self._exits.append(ctx.__exit__)
-        value = ctx.__enter__()
-        return value
+        return ctx.__enter__()
 
     def __exit__(self, exc_type, exc_value, exc_tb):
         for exit in self._exits[::-1]:

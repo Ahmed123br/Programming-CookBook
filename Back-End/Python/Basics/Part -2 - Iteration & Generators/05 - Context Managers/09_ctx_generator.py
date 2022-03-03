@@ -1,8 +1,7 @@
 def my_gen(): # Generator Function
     try:
         print('creating context and yielding object')
-        lst = [1, 2, 3, 4, 5]
-        yield lst
+        yield [1, 2, 3, 4, 5]
     finally:
         print('exiting context and cleaning up')
 

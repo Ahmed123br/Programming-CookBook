@@ -251,7 +251,7 @@ class MainApplication:
         text_report = self.edit_space.get("1.0", 'end-1c')
         tkm.showinfo('Message Info', 'Saving file with current time')
         local_time = time.strftime("%m_%d_%Y_%H_%M_%S")
-        with open("Report " + str(local_time) + ".txt", "a") as outf:
+        with open(f"Report {str(local_time)}.txt", "a") as outf:
             outf.write(text_report)
 
     # To save the report in pdf format, saves whatever is in the status box
@@ -259,8 +259,11 @@ class MainApplication:
         text_report = self.edit_space.get("1.0", 'end-1c')
         tkm.showinfo('Message Info', 'Saving file with current time')
         local_time = time.strftime("%m_%d_%Y_%H_%M_%S")
-        pdf_file_name = "Report " + str(self.entry_operator) + " " + str(self.entry_vessel) + " " +\
-                        str(local_time) + ".pdf"
+        pdf_file_name = (
+            f"Report {str(self.entry_operator)} {str(self.entry_vessel)} "
+            + str(local_time)
+        ) + ".pdf"
+
 
         doc = SimpleDocTemplate(pdf_file_name)
 
@@ -284,7 +287,7 @@ class MainApplication:
         text_report = self.edit_space.get("1.0", 'end-1c')
         tkm.showinfo('Message Info', 'Printing and Saving the Report')
         local_time = time.strftime("%m_%d_%Y_%H_%M_%S")
-        pdf_file_name = "Report " + str(local_time) + ".pdf"
+        pdf_file_name = f"Report {str(local_time)}.pdf"
 
         doc = SimpleDocTemplate(pdf_file_name)
 
@@ -313,16 +316,14 @@ class MainApplication:
 
     # To open up the help document
     def open_help(self):
-        help_add = "Help.txt"
-        if help_add:
+        if help_add := "Help.txt":
             os.startfile(help_add)
         else:
             tkm.showinfo('Message Info', "Sorry the help isn't available")
 
     # To open the wiring diagram
     def open_wiring_diag(self):
-        diag_add = "wiring_diagram.jpg"
-        if diag_add:
+        if diag_add := "wiring_diagram.jpg":
             os.startfile(diag_add)
         else:
             tkm.showinfo('Message Info', "Sorry the help isn't available")

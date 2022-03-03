@@ -4,11 +4,7 @@ import random
 def generate_random(seed=None):
 
     random.seed(seed)
-    result = []
-
-    # Randint
-    for _ in range(5):
-        result.append(random.randint(0, 5))
+    result = [random.randint(0, 5) for _ in range(5)]
 
     # Shuffle
     characters = ['a', 'b', 'c', 'd']
@@ -16,9 +12,7 @@ def generate_random(seed=None):
     result.append(characters)
 
     # Gaussian distribution
-    for _ in range(5):
-        result.append(random.gauss(0, 1))
-
+    result.extend(random.gauss(0, 1) for _ in range(5))
     return result
 
 

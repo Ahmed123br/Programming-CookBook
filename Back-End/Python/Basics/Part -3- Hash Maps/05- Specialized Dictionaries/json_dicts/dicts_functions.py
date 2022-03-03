@@ -11,7 +11,7 @@ d3 = {'erlang': 5, 'haskell': 2, 'python': 1, 'pascal': 1}
 
 counter_1 = defaultdict(int)
 
-x = [[(k, v) for k,v in d] for d in [d1.items(), d2.items(), d3.items()]]
+x = [list(d) for d in [d1.items(), d2.items(), d3.items()]]
 for i in x:
     for k,v in i:
         counter_1[k] += v
@@ -68,10 +68,7 @@ def count_eye_color(colors, people):
     cnt = Counter()
     for color in colors:
         for p in people:
-            if color == p.eye_color:
-                cnt[color] += 1
-            else:
-                cnt[color] += 0
+            cnt[color] += 1 if color == p.eye_color else 0
     return cnt
 
 get_result = count_eye_color(eye_colors, persons)

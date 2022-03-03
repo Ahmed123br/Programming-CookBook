@@ -48,8 +48,7 @@ print('==='*15)
 def context_manager_dec(gen_fn):
     def helper(*args, **kwargs):
         gen = gen_fn(*args, **kwargs)
-        ctx = GenContextManager(gen)
-        return ctx
+        return GenContextManager(gen)
     return helper
 
 @context_manager_dec

@@ -4,8 +4,7 @@ import unittest
 def run_tests(test_class):
     suite = unittest.TestLoader().loadTestsFromTestCase(test_class)
     runner = unittest.TextTestRunner(verbosity=2)
-    result = runner.run(suite)
-    return result
+    return runner.run(suite)
 
 class Test3(unittest.TestCase):
 
@@ -60,10 +59,7 @@ class Test3(unittest.TestCase):
     def test_recursive(self):
 
         def lastSurvivor(n, k):
-            if n == 1:
-                return 1
-            else:
-                return (lastSurvivor(n-1, k) + k-1) % n+1
+            return 1 if n == 1 else (lastSurvivor(n-1, k) + k-1) % n+1
 
 
         results = [lastSurvivor(*survivor) for survivor in self.ALL_SURVIVOR]

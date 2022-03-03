@@ -11,17 +11,17 @@ rss_feed = {'wsj': "https://feeds.a.dj.com/rss/RSSWSJD.xml",
 @app.route("/")
 def get_news():
     
-    if request.args.get('publication'):
-        query = request.args.get('publication').lower() 
-        if not query or query not in rss_feed: 
-            publication = 'wsj'
-            feed = feedparser.parse(rss_feed[publication])
-            return render_template("view.html", articles=feed['entries'])
-        
-        publication = query
+    if not request.args.get('publication'):
+        return render_template("view.html")
+    query = request.args.get('publication').lower()
+    if not query or query not in rss_feed: 
+        publication = 'wsj'
         feed = feedparser.parse(rss_feed[publication])
         return render_template("view.html", articles=feed['entries'])
-    return render_template("view.html")
+
+    publication = query
+    feed = feedparser.parse(rss_feed[publication])
+    return render_template("view.html", articles=feed['entries'])
 
 
 if __name__ == "__main__":

@@ -26,10 +26,7 @@ class BaseMenu(object):
         return False
     
     def is_active(self, view):
-        for c in self._children:
-            if c.is_active(view):
-                return True
-        return False
+        return any(c.is_active(view) for c in self._children)
     
     def get_class_name(self):
         return self.class_name
@@ -61,16 +58,10 @@ class MenuCategory(BaseMenu):
         return True
     
     def is_visible(self):
-        for c in self._children:
-            if c.is_visible():
-                return True
-        return False
+        return any(c.is_visible() for c in self._children)
 
     def is_accessible(self):
-        for c in self._children:
-            if c.is_accessible():
-                return True
-        return False
+        return any(c.is_accessible() for c in self._children)
 
 
 class MenuView(BaseMenu):
@@ -101,20 +92,13 @@ class MenuView(BaseMenu):
         return url
 
     def is_active(self, view):
-        if view == self._view:
-            return True
-        return super(MenuView, self).is_active(view)
+        return True if view == self._view else super(MenuView, self).is_active(view)
     
     def is_visible(self):
-        if self._view is None:
-            return False
-        return self._view.is_visible()
+        return False if self._view is None else self._view.is_visible()
 
     def is_accessible(self):
-        if self._view is None:
-            return False
-        # Same as ---_> return super(MenuView, self).is_accessible()
-        return self._view.is_accessible()
+        return False if self._view is None else self._view.is_accessible()
         
 
 class MenuLink(BaseMenu):

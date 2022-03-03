@@ -26,7 +26,7 @@ def close_db(error):
 def index():
 
     db = get_db()
-    
+
     if request.method == 'POST':
         try:
              # Using function from query_data.py, process automatically dates    
@@ -37,12 +37,12 @@ def index():
             db.commit()
         except ValueError as err:
             print(err)
-            flash(f'Opps, You entered an empty date! Select a Date!')
+            flash('Opps, You entered an empty date! Select a Date!')
         except IntegrityError as err:
             print(err)
             catch_day = request.form['date']
             flash(f'Opps, seems like you already add this day --> {catch_day} check better!') 
-    
+
     # Query all days and show DESC/ASC
     cur = db.execute(query_all_days)
     results = cur.fetchall()
@@ -54,7 +54,7 @@ def index():
 
         month_selected = select_month(request.args.get('search'), date_results)
         return render_template('index.html', results=month_selected, all_month=all_month)         
-    
+
     return render_template('index.html', results=date_results, all_month=all_month)  
     
     

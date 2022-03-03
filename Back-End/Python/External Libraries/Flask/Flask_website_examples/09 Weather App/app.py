@@ -13,7 +13,7 @@ app.config['DATABASE_FILE'] = 'data.sqlite'
 basedir = op.join(op.abspath(op.dirname(__file__)), app.config['DATABASE_FILE'])
 
 app.config['SECRET_KEY'] = os.urandom(16)
-app.config['SQLALCHEMY_DATABASE_URI']   = 'sqlite:///' + basedir
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{basedir}'
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -88,9 +88,7 @@ def get_weather_data(city):
 
     url = f'http://api.openweathermap.org/data/2.5/weather?q={ city }&units=imperial&appid=271d1234d3f497eed5b1d80a07b3fcd1'
 
-    r = requests.get(url).json()
-
-    return r
+    return requests.get(url).json()
 
 if __name__ == '__main__':
     if not os.path.exists(basedir):

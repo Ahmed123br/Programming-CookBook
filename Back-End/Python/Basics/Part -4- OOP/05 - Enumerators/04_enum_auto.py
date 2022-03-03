@@ -193,12 +193,7 @@ State.WAIT, Errors.TimeoutError
 class Aliased(enum.Enum):
     def _generate_next_value_(name, start, count, last_values):
         print(f'count={count}')
-        if count % 2 == 1:
-            # odd, make this member an alias of the previous one
-            return last_values[-1]
-        else:
-            # make a new value
-            return last_values[-1] + 1
+        return last_values[-1] if count % 2 == 1 else last_values[-1] + 1
        
     GREEN = 1
     GREEN_ALIAS = 1

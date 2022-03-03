@@ -38,10 +38,7 @@ def parse_date(value, *, default=None):
 def parse_string(value, *, default=None):
     try:
         cleaned = str(value).strip()
-        if not cleaned: # => Checks is string is empty, if it is then ignores the Row
-            return default
-        else:
-            return cleaned
+        return default if not cleaned else cleaned
     except ValueError:
         return default
 
@@ -71,18 +68,14 @@ def parse_row(row, *, default=None):
 
 def parsed_data():
     for row in read_data():
-        parsed = parse_row(row)
-        if parsed:
+        if parsed := parse_row(row):
             yield parsed
 
 def violation_counts_by_make():
     makes_counts = defaultdict(int)
     for data in parsed_data():
         makes_counts[data.vehicle_make] += 1
-    return {make: cnt
-            for make, cnt in
-            sorted(makes_counts.items(), key=lambda t: t[1], reverse=True)
-            }
+    return dict(sorted(makes_counts.items(), key=lambda t: t[1], reverse=True))
 
 
 ####################

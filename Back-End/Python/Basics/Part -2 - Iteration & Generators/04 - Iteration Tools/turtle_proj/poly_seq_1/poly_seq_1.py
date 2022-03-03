@@ -30,11 +30,10 @@ SIDES = {
 class Polygon:
 
     def __init__(self, sides: int, circumradius: float):
-        if sides >= 3:
-            self._sides = sides
-            self.__name__ = self.get_type()
-        else:
+        if sides < 3:
             raise TypeError('Polygon must have at least 3 edges')
+        self._sides = sides
+        self.__name__ = self.get_type()
         self.circumradius = circumradius
         self.R = circumradius # Circumradius Alias
         self.n = sides # Number of Sides Alias
@@ -53,10 +52,9 @@ class Polygon:
     def edges(self, value):
         if isinstance(value, int):
             setattr(self, '_sides' ,value)
-        else:
-            if isinstance(value, float):
-                print('The number of edges must be an Integer value, not a Floating Point value')
-                print(self._sides)
+        elif isinstance(value, float):
+            print('The number of edges must be an Integer value, not a Floating Point value')
+            print(self._sides)
 
     @property
     def vertices(self):
@@ -68,7 +66,7 @@ class Polygon:
 
     @vertices.setter
     def vertices(self, value):
-        if isinstance(value, int) or isinstance(value, float):
+        if isinstance(value, (int, float)):
             setattr(self, '_sides', value)
         else:
             print('Invalid Input')
@@ -78,20 +76,13 @@ class Polygon:
 
     def __eq__(self, other):  # Based on #edges & Circumradius
         if isinstance(other, Polygon):
-            if self.edges == other.edges and self.circumradius == other.circumradius:
-                return True
-            else:
-                return False
-        else:
-            print('Equality evaluation is possible only with 2 Polygons')
-            return NotImplemented
+            return self.edges == other.edges and self.circumradius == other.circumradius
+        print('Equality evaluation is possible only with 2 Polygons')
+        return NotImplemented
 
     def __gt__(self, other):  # Based on # Vertices
         if isinstance(other, Polygon):
-            if self.edges > other.edges:
-                return True
-            else:
-                return False
+            return self.edges > other.edges
         else:
             return NotImplemented
     @property

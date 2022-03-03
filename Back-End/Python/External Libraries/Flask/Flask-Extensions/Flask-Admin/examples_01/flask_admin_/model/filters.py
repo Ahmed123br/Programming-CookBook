@@ -19,8 +19,7 @@ class BaseFilter(object):
     
     def get_options(self, view):
 
-        options = self.options
-        if options:
+        if options := self.options:
             if callable(options):
                 options = options()
             return options
@@ -94,8 +93,10 @@ class BaseDateFilter(BaseFilter):
 class BaseDateBetweenFilter(BaseFilter):
 
     def clean(self, value):
-        return [datetime.datetime.strptime(rande, '%Y-%m-%d').date()
-                for range in value.split(' to ')]
+        return [
+            datetime.datetime.strptime(rande, '%Y-%m-%d').date()
+            for _ in value.split(' to ')
+        ]
     
     def operation(self):
         return 'between'
@@ -105,10 +106,7 @@ class BaseDateBetweenFilter(BaseFilter):
         try:
             value = [datatime.datetime.strptime(range, '%Y-%m-%d').date()
                     for range in value.split(' to ')]
-            if (len(value) == 2) and (value[0] <= value[1]):
-                return True
-            else:
-                return False
+            return (len(value) == 2) and (value[0] <= value[1])
         except ValueError:
             return False
 
@@ -138,10 +136,7 @@ class BaseDateTimeBetweenFilter(BaseFilter):
         try:
             value = [datetime.datetime.strptime(range, '%Y-%m-%d %H:%M:%S')
                     for range in value.split(' to ')]
-            if (len(value) == 2) and (value[0] <= value[1]):
-                return True
-            else:
-                return False
+            return (len(value) == 2) and (value[0] <= value[1])
         except ValueError:
             return False
 
@@ -178,13 +173,9 @@ class BaseTimeBetweenFilter(BaseFilter):
         try:
             timetuples = [time.strptime(range, '%H:%M:%S')
                         for range in value.split(' to ')]
-            if (len(timetuples) == 2) and (timetuples[0] <= timetuples[1]):
-                return True
-            else:
-                return False
+            return (len(timetuples) == 2) and (timetuples[0] <= timetuples[1])
         except ValueError:
             raise
-            return False
 
 
 class BaseUuidFilter(BaseFilter):
@@ -213,7 +204,7 @@ class BaseUuidListFilter(BaseFilter):
 class BaseFilterConverter(object):
 
     def __init__(self):
-        self.converters = dict()
+        self.converters = {}
 
         for p in dir(self):
             attr = getattr(self, p)

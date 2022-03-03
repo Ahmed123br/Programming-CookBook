@@ -1,6 +1,6 @@
 class IntegerValue:
     def __init__(self, name):
-        self.storage_name = '_' + name 
+        self.storage_name = f'_{name}' 
         
     def __set__(self, instance, value):
         setattr(instance, self.storage_name, int(value))
@@ -46,10 +46,7 @@ class IntegerValue:
         self.values[instance] = int(value)
         
     def __get__(self, instance, owner_class):
-        if instance is None:
-            return self
-        else:
-            return self.values.get(instance)
+        return self if instance is None else self.values.get(instance)
 
 class Point2D:
     x = IntegerValue()

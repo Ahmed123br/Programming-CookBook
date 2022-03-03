@@ -9,13 +9,11 @@ def string_cleaner(str):
     for word in string_separated:
         if word: # Not Blank line
             remove_whitespace_from_side = word.strip().replace('\n', ' ') # NOTE: we do this because there are multiple \n\n in some string
-            separate_each_string = remove_whitespace_from_side.split()
-            if separate_each_string:  # NOTE: If empty means that is a useless white spece within a string
+            if separate_each_string := remove_whitespace_from_side.split():
                 rejoined_sub_string = ' '.join(separate_each_string)
                 ready_string = rejoined_sub_string.replace(' ', '\n') # Add again \n
                 cleaned_string.append(ready_string)
-    ready_to_go = ' '.join(cleaned_string)
-    return ready_to_go
+    return ' '.join(cleaned_string)
 
 result = string_cleaner(test_string)
 
@@ -31,10 +29,10 @@ def normalize_text(get_text):
     saved_new_lines = []
     counter = 0
     for each_line in get_text.split("\n"):
-        if not each_line == "":
+        if each_line != "":
             normalize_each_line = re.sub(r'\s+', ' ', each_line.strip())
             if each_line.startswith(" "):
-                saved_new_lines[counter-1] += " " + normalize_each_line
+                saved_new_lines[counter-1] += f" {normalize_each_line}"
             else:
                 saved_new_lines.append(normalize_each_line)
                 counter += 1
@@ -76,8 +74,7 @@ import string
                 else:
                     cleaned_string.append(word)
 
-        ready_baby = ' '.join(cleaned_string)
-        return ready_baby
+        return ' '.join(cleaned_string)
 
 result = string_cleaner(test_string)
 
@@ -96,8 +93,7 @@ def string_cleaner(str):
             else:
                 cleaned_string.append(word)
 
-    ready_baby = ' '.join(cleaned_string)
-    return ready_baby
+    return ' '.join(cleaned_string)
 
 
 result = string_cleaner(test_string)

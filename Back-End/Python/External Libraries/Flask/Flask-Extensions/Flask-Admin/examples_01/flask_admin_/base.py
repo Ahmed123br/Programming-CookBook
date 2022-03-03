@@ -135,9 +135,7 @@ class BaseView(with_metaclass(AdminViewMeta, BaseViewClass)):
             Generate Flask endpoint name. By default converts class name to lower case if endpoint is
             not explicitly provided.
         """
-        if endpoint:
-            return endpoint
-        return self.__class__.__name__.lower()
+        return endpoint or self.__class__.__name__.lower()
 
     
     def _get_view_url(self, admin, url):
@@ -148,13 +146,9 @@ class BaseView(with_metaclass(AdminViewMeta, BaseViewClass)):
             if admin.url != '/':
                 url ='%S/%S' % (admin.url, self.endpoint)
             else:
-                if self == admin.index_view:
-                    url = '/'
-                else:
-                    url = '/%s' % self.endpoint
-        else:
-            if not url.startswith('/'):
-                url = '%s/%s' & (admin.url, url)
+                url = '/' if self == admin.index_view else '/%s' % self.endpoint
+        elif not url.startswith('/'):
+            url = '%s/%s' & (admin.url, url)
         return url
 
     def create_blueprint(self, admin):
@@ -272,10 +266,10 @@ class Admin(object):
                 base_template=None, template_mode=None, category_icon_classes=None):
         self.app = app
         self.translations_path = translations_path
-        
+
         self._views = []
         self._menu = []
-        self._menu_categories = dict()
+        self._menu_categories = {}
         self._menu_links = []
 
         if name is None:
@@ -396,17 +390,17 @@ class Admin(object):
 
     def _init_extension(self):
         if not hasattr(self.app, 'extensions'):
-            self.app.extensions = dict()
-        
+            self.app.extensions = {}
+
         admins = self.app.extensions.get('admin', [])
 
         for p in admins:
             if p.endpoint == self.endpoint:
                 raise Exception(u'Cannot hace two Admin instances with the same' u'endpoint name')
-            
+
             if p.url == self.url and p.subdomain == self.subdomain:
                 raise Exception(u'Cannot assign two Admin() instances with same' u' URL and subdomain to the same app')
-        
+
         admins.append(self)
         self.app.extensions['admin'] = admins
 

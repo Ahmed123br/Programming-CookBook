@@ -204,9 +204,8 @@ def get_item_forgive_me(seq, idx, default=None):
 
 
 def get_item_ask_perm(seq, idx, default=None):
-    if hasattr(seq, '__getitem__'):
-        if idx < len(seq):
-            return seq[idx]
+    if hasattr(seq, '__getitem__') and idx < len(seq):
+        return seq[idx]
     return default
 
 

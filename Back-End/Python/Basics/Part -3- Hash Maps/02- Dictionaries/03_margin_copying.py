@@ -263,7 +263,7 @@ def copy_create(d):
     d1 = dict(d)
     
 def copy_comprehension(d):
-    d1 = {k: v for k, v in d.items()}
+    d1 = dict(d.items())
 
 
 

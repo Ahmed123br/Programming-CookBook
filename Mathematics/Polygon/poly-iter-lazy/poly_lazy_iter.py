@@ -21,7 +21,7 @@ class Polygon:
         self._R = R
         self.__name__ = self.get_type()
         self.name = self.__name__
-        self.mapped_polygon = dict()
+        self.mapped_polygon = {}
         self.process_polygon()
 
     def process_polygon(self): # Pre calculates all the Polygon Properties # Note 1 bottom
@@ -69,11 +69,10 @@ class Polygon:
 
     @property
     def edge_length(self):
-        if not self.mapped_polygon.get('edge_length'):
-            get_edge_length = (self._R*2) * (sin(pi/self._n))
-            return self.polygon_mapper('edge_length', get_edge_length)
-        else:
+        if self.mapped_polygon.get('edge_length'):
             return self.mapped_polygon.get('edge_length')
+        get_edge_length = (self._R*2) * (sin(pi/self._n))
+        return self.polygon_mapper('edge_length', get_edge_length)
 
     @property
     def interior_angle(self):
@@ -138,9 +137,8 @@ class Polygons: # Iterable, lazy loading
     def area_ratio(self):
         if self._area_ratio:
             return self._area_ratio
-        else:
-            self._area_ratio = max(self.get_poly_ratio())
-            return self.area_ratio
+        self._area_ratio = max(self.get_poly_ratio())
+        return self.area_ratio
 
     def get_area(self):
         return [poly.area for poly in self]
@@ -166,10 +164,9 @@ class Polygons: # Iterable, lazy loading
 
             if self.index >= self.max_sides:
                 raise StopIteration
-            else:
-                get_polygons = Polygon(self.index, self.R)
-                self.index += 1
-                return get_polygons
+            get_polygons = Polygon(self.index, self.R)
+            self.index += 1
+            return get_polygons
 
 
 

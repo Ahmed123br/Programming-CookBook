@@ -1,6 +1,6 @@
 import random
 
-PLUGINS = dict()
+PLUGINS = {}
 
 
 def register(func):

@@ -25,9 +25,7 @@ class CacheNum:
     def cache(self, value):
         if len(self._cache) >= 2:
             self._prev_num = self._cache[-1]
-            return self._cache.append(value)
-        else:
-            return self._cache.append(value)
+        return self._cache.append(value)
 
     @property
     def prev_num(self):
@@ -75,22 +73,20 @@ while True:
     run_game = input('>>> ')
     if run_game.lower() == 'n':
         break
+    if isinstance('cache', CacheNum):
+        del cache
     else:
-        if isinstance('cache', CacheNum):
-            del cache
-        else:
-            cache = CacheNum()
-            sys_num = gen_num()
-            print(sys_num)
-            while True:
-                try:
-                    guess = int(input('>>>'))
-                except ValueError as err:
-                    print(err)
-                    continue
-                check = check_guess(sys_num, guess, cache)
-                if check == 'won':
-                    print(check)
-                    break
-                else:
-                    continue
+        cache = CacheNum()
+        sys_num = gen_num()
+        print(sys_num)
+        while True:
+            try:
+                guess = int(input('>>>'))
+            except ValueError as err:
+                print(err)
+                continue
+            check = check_guess(sys_num, guess, cache)
+            if check != 'won':
+                continue
+            print(check)
+            break

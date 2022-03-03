@@ -87,10 +87,9 @@ class PolygonsIterator:
     def __next__(self):
         if self._i > self._m:
             raise StopIteration
-        else:
-            result = Polygon(self._i, self._R)
-            self._i += 1
-            return result
+        result = Polygon(self._i, self._R)
+        self._i += 1
+        return result
 
 
 class Polygons:

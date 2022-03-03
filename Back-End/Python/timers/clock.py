@@ -10,7 +10,7 @@ def add_time(start, duration, start_weekday=None):
     start_time, period = start.split(' ')
    
     def process_time():
-   
+       
         time_array = ([int(t) for t in start_time.split(":")]),([int(d) for d in duration.split(":")])
         end_hours, end_mins = (time_array[0][0] + time_array[1][0], time_array[0][1] + time_array[1][1])
         days = int(end_hours/24)
@@ -25,8 +25,8 @@ def add_time(start, duration, start_weekday=None):
             new_weekday = weekdays[(start_day_idx + days % 7)  % 7]
         else:
             new_weekday = False
-        
-        for i in range(clock):
+
+        for _ in range(clock):
             if end_period[-1].lower() == 'am':
                 end_period.append('PM')
             else:

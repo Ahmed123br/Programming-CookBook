@@ -17,10 +17,7 @@ class Point:
             return NotImplemented
 
     def __lt__(self, other):
-        if isinstance(other, Point):
-            return abs(self) < abs(other)
-        else:
-            return NotImplemented
+        return abs(self) < abs(other) if isinstance(other, Point) else NotImplemented
 
     def __repr__(self):
         return f'{self.__class__.__name__}({self.x}, {self.y})'
@@ -41,7 +38,7 @@ print(p1 > p4) # True
 def complete_ordering(cls):
     if '__eq__' in dir(cls) and '__lt__' in dir(cls):
         cls.__le__ = lambda self, other: self < other or self == other
-        cls.__gt__ = lambda self, other: not(self < other) and not (self == other)
+        cls.__gt__ = lambda self, other: not(self < other) and self != other
         cls.__ge__ = lambda self, other: not (self < other)
     return cls
 

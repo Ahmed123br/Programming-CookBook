@@ -112,10 +112,7 @@ class BaseView(with_metaclass(AdminViewMeta, BaseViewClass)):
 
     def _get_endpoint(self, endpoint):
      
-        if endpoint:
-            return endpoint
-
-        return self.__class__.__name__.lower()
+        return endpoint or self.__class__.__name__.lower()
 
     def _get_view_url(self, admin, url):
         """
@@ -125,13 +122,9 @@ class BaseView(with_metaclass(AdminViewMeta, BaseViewClass)):
             if admin.url != '/':
                 url = '%s/%s' % (admin.url, self.endpoint)
             else:
-                if self == admin.index_view:
-                    url = '/'
-                else:
-                    url = '/%s' % self.endpoint
-        else:
-            if not url.startswith('/'):
-                url = '%s/%s' % (admin.url, url)
+                url = '/' if self == admin.index_view else '/%s' % self.endpoint
+        elif not url.startswith('/'):
+            url = '%s/%s' % (admin.url, url)
 
         return url
 
@@ -319,7 +312,7 @@ class Admin(object):
         # Appends _views with Func add_view
         self._views = []
         self._menu = []
-        self._menu_categories = dict()
+        self._menu_categories = {}
         self._menu_links = []
 
         if name is None:
@@ -458,7 +451,7 @@ class Admin(object):
 
     def _init_extension(self):
         if not hasattr(self.app, 'extensions'):
-            self.app.extensions = dict()
+            self.app.extensions = {}
 
         admins = self.app.extensions.get('admin', [])
 

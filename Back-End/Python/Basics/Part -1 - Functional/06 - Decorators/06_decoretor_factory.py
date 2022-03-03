@@ -59,7 +59,7 @@ def timed(num_reps=1):
         @wraps(fn)
         def inner(*args, **kwargs):
             total_elapsed = 0
-            for i in range(num_reps):
+            for _ in range(num_reps):
                 start = perf_counter()
                 result = fn(*args, **kwargs)
                 end = perf_counter()
