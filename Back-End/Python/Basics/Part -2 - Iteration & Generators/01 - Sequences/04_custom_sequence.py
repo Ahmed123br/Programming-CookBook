@@ -24,10 +24,7 @@ class Fib:
     @staticmethod
     @lru_cache(2*32) # =>  maxsize at its default value of 128
     def fib(n):
-        if n < 2:
-            return 1
-        else:
-            return Fib.fib(n-1) + Fib.fib(n-2)
+        return 1 if n < 2 else Fib.fib(n-1) + Fib.fib(n-2)
 
 f = Fib(10)
 print(len(f)) # > 10

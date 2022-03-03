@@ -1,10 +1,8 @@
 def myGenerator1(n):
-    for i in range(n):
-        yield i
+    yield from range(n)
 
 def myGenerator2(n, m):
-    for j in range(n, m):
-        yield j
+    yield from range(n, m)
 
 def myGenerator3(n, m):
     yield from myGenerator1(n)

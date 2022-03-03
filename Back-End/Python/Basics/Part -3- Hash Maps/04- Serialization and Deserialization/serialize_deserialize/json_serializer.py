@@ -67,7 +67,7 @@ class FormatterEncoder(json.JSONEncoder):
     @singledispatch
     def default(self, arg):
 
-        if isinstance(arg, Stock) or isinstance(arg, Trade):
+        if isinstance(arg, (Stock, Trade)):
             return vars(arg)
         elif isinstance(arg, date):
             return arg.strftime('%Y-%m-%dT%H:%M:%S')
@@ -91,8 +91,8 @@ class CustomDecoder(json.JSONDecoder):
         obj = json.loads(arg)
         extract_data = [obj[i] for i in obj]
 
-        for i in range(len(extract_data)):
-            check_data = extract_data[i]
+        for extract_datum in extract_data:
+            check_data = extract_datum
 
             for item in check_data:
                 check_inside = item

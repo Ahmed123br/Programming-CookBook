@@ -61,7 +61,7 @@ def html_str(s):
 @htmlize.register(list)
 def html_list(l):
     items = [f'<li>{htmlize(item)}</li>' for item in l]
-    return f'<ul>\n' + '\n'.join(items) + '\n</ul>'
+    return '<ul>\\n' + '\n'.join(items) + '\n</ul>'
 
 @htmlize.register(dict)
 def html_dict(d):

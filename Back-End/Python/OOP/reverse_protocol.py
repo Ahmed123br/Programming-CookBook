@@ -9,8 +9,7 @@ class Reversable:
         return self.seq[item]
     
     def __reversed__(self):
-        for elem in 'Reversing: ' + self.seq[::-1]:
-            yield elem
+        yield from f'Reversing: {self.seq[::-1]}'
     
 
 r = Reversable('Foo bar baz!')

@@ -4,7 +4,7 @@ import os
 path_ = os.path
 db_name = 'main.db'
 basedir = path_.join(path_.abspath(path_.dirname(__file__)), db_name)
-db_ = dict()
+db_ = {}
 
 
 def connect_db():
@@ -79,8 +79,7 @@ def init_db(query=None, script=None):
 def check_tables():
     conn = get_db()
     get_tables = "SELECT name FROM sqlite_master WHERE (TYPE = 'table') AND (name NOT LIKE 'sqlite_%')"
-    tables = [list(table)[0] for table in fetch_all(conn, get_tables)]
-    return tables
+    return [list(table)[0] for table in fetch_all(conn, get_tables)]
 
 
 def back_up():

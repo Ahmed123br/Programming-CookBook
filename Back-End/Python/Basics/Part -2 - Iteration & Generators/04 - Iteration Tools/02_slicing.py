@@ -12,7 +12,7 @@ facts = factorials(100)
 
 
 def slice_(iter, start, stop):
-    for _ in range(0, start): # Iterator to a Fix starting point
+    for _ in range(start): # Iterator to a Fix starting point
         next(iter)
 
     for _ in range(start, stop):

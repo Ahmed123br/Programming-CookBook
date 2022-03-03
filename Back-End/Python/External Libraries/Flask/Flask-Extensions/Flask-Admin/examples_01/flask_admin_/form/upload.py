@@ -166,17 +166,15 @@ class FileUploadField(fields.StringField):
     
     def populate_obj(self, obj, name):
         field = getattr(obj, name, None)
-        if field:
-            # If field should be deleted, clean it up
-            if self._should_delete:
-                self._delete_file(field) # Function Below
-                setattr(obj, name, None)
-                return
-        
+        if field and self._should_delete:
+            self._delete_file(field) # Function Below
+            setattr(obj, name, None)
+            return
+
         if self._is_uploaded_file(self,data):
             if field:
                 self,_delete_file(field)
-            
+
             filename = self.generate_name(obj, self.data) # Function Below
             filename = self._save_file(self.data, filename) # Function Below
             # update filename of FileStorage to our validated name
@@ -301,10 +299,9 @@ class ImageUploadField(FileUploadField):
         if image.size[0] < width or image.size[1] > heigth:
             if force:
                 return ImageOps.fit(self.image, (widht, heigth), Image.ANTIALIAS)
-            else:
-                thumb = self.image.copy()
-                thumb.thumbnail((width, height), Image.ANTIALIAS)
-                return thumb
+            thumb = self.image.copy()
+            thumb.thumbnail((width, height), Image.ANTIALIAS)
+            return thumb
         return image
     
     def _save_image(self, image, path, format='JPEG'):

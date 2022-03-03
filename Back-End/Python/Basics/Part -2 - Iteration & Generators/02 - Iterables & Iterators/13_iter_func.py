@@ -22,10 +22,9 @@ class SquaresIterator:
     def __next__(self):
         if self._i >= len(self._squares):
             raise StopIteration
-        else:
-            result = self._squares[self._i]
-            self._i += 1
-            return result
+        result = self._squares[self._i]
+        self._i += 1
+        return result
 
 sq = Squares(5)
 sq_iterator = SquaresIterator(sq)

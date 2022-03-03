@@ -10,7 +10,12 @@ def common_function(name, sleep_time):
     global total_jobs
     main_thread = threading.main_thread()
     logging.info(f'MAIN THREAD --> {main_thread}')
-    logging.info(f"Sub Thread %s: starting sub process %r", name, common_function.__name__)
+    logging.info(
+        "Sub Thread %s: starting sub process %r",
+        name,
+        common_function.__name__,
+    )
+
     for i in ["job_1", "job_2", "job_3", "job_4", "job_5", "job_6", "job_7", "job_8", "job_9", "job_10"]:
         logging.info(f'{name} Do job --> {i} ')
         total_jobs += 1
@@ -18,7 +23,12 @@ def common_function(name, sleep_time):
     for i in ["job_1", "job_2", "job_3", "job_4", "job_5", "job_6", "job_7", "job_8", "job_9", "job_10"]:
         logging.info(f'{name} Do job --> {i} ')
         total_jobs += 1
-    logging.info(f"Sub Thread %s: finishing sub process %r", name, common_function.__name__)
+    logging.info(
+        "Sub Thread %s: finishing sub process %r",
+        name,
+        common_function.__name__,
+    )
+
     logging.info(f' {name} Finish -> {total_jobs}')
 
 
@@ -27,7 +37,7 @@ def thread_function(name):
     logging.info("Thread %s: starting", name)
 
     # --------- SUB THREADS (Tasks)
-    tasks = list()
+    tasks = []
     for index in range(10):
         task_name = f'Task -> {index}'
         logging.info(f"{thread_function.__name__}    : create and start task: {task_name}")

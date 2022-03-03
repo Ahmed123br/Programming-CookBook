@@ -3,15 +3,12 @@ from datetime import datetime, timezone
 # monkey patching
 def debug_info(cls):
     def info(self):
-        results = []
-        results.append('time: {0}'.format(datetime.now(timezone.utc)))
+        results = ['time: {0}'.format(datetime.now(timezone.utc))]
         results.append('class: {0}'.format(self.__class__.__name__))
         results.append('id: {0}'.format(hex(id(self))))
 
         if vars(self):
-            for k, v in vars(self).items():
-                results.append('{0}: {1}'.format(k, v))
-
+            results.extend('{0}: {1}'.format(k, v) for k, v in vars(self).items())
         # we have not covered lists, the extend method and generators,
         # but note that a more Pythonic way to do this would be:
         # if vars(self):

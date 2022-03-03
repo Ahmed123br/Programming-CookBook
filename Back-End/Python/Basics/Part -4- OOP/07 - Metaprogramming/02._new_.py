@@ -16,8 +16,7 @@ print(p)
 class Point:
     def __new__(cls, x, y):
         print('Creating instance...', x, y)
-        instance = object.__new__(cls)  # delegate to object.__new__
-        return instance  # don't forget to return the new instance!
+        return object.__new__(cls)
     
     def __init__(self, x, y):
         print('Initializing instance...', x, y)
@@ -45,22 +44,20 @@ isinstance(result, int)
 class Person:
     def __new__(cls, name):
         print(f'Person: Instantiating {cls.__name__}...')
-        instance = super().__new__(cls)
-        return instance
+        return super().__new__(cls)
         
     def __init__(self, name):
-        print(f'Person: Initializing instance...')
+        print('Person: Initializing instance...')
         self.name = name
         
 
 class Student(Person):
     def __new__(cls, name, major):
         print(f'Student: Instantiating {cls.__name__}...')
-        instance = super().__new__(cls, name)
-        return instance
+        return super().__new__(cls, name)
     
     def __init__(self, name, major):
-        print(f'Student: Initializing instance...')
+        print('Student: Initializing instance...')
         super().__init__(name)
         self.major = major
 
@@ -75,9 +72,7 @@ s = Student('John', 'Major')
 class Square:
     def __new__(cls, w, l):
         cls.area = lambda self: self.w * self.l
-        # or use setattr(cls, 'area', lambda self: self.w * self.l)
-        instance = super().__new__(cls)  
-        return instance
+        return super().__new__(cls)
     
     def __init__(self, w, l):
         self.w = w

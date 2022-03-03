@@ -22,32 +22,43 @@ def match_keys(data, valid, path):
     missing_keys = valid_keys - data_keys
     if missing_keys or extra_keys:
         is_ok = False
-        missing_msg = ('missing keys:' +
-                       ','.join({path + '.' + str(key)
-                                 for key in missing_keys})
-                      ) if missing_keys else ''
-        extras_msg = ('extra keys:' +
-                     ','.join({path + '.' + str(key)
-                               for key in extra_keys})
-                     ) if extra_keys else ''
+        missing_msg = (
+            (
+                'missing keys:'
+                + ','.join({f'{path}.{str(key)}' for key in missing_keys})
+            )
+            if missing_keys
+            else ''
+        )
+
+        extras_msg = (
+            (
+                'extra keys:'
+                + ','.join({f'{path}.{str(key)}' for key in extra_keys})
+            )
+            if extra_keys
+            else ''
+        )
+
         raise SchemaKeyMismatch(' '.join((missing_msg, extras_msg)))
 
 
 def match_types(data, template, path):
 
     for key, value in template.items():
-        if isinstance(value, dict):
-            template_type = dict
-        else:
-            template_type = value
+        template_type = dict if isinstance(value, dict) else value
         data_value = data.get(key, object())
         if isinstance(data_value, template_type):
             continue
-        else:
-            err_msg = ('incorrect type: ' + path + '.' + key +
-                       ' -> expected ' + template_type.__name__ +
-                       ', found ' + type(data_value).__name__)
-            raise SchemaTypeMismatch(err_msg)
+        err_msg = (
+            (
+                (f'incorrect type: {path}.{key}' + ' -> expected ')
+                + template_type.__name__
+            )
+            + ', found '
+        ) + type(data_value).__name__
+
+        raise SchemaTypeMismatch(err_msg)
 
 
 def recurse_validate(data, template, path):
@@ -57,7 +68,7 @@ def recurse_validate(data, template, path):
     dictionary_type_keys = {key for key, value in template.items()
                            if isinstance(value, dict)}
     for key in dictionary_type_keys:
-        sub_path = path + '.' + str(key)
+        sub_path = f'{path}.{str(key)}'
         sub_template = template[key]
         sub_data = data[key]
         recurse_validate(sub_data, sub_template, sub_path)

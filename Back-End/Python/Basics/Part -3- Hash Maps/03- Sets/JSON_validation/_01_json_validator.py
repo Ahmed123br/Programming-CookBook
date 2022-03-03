@@ -88,8 +88,7 @@ def get_nest(data, template):
     template_as_set = set(template)
     data_as_set = set(data)
     if template_as_set == data_as_set: # Perform intersect only if Receiving Dict has same top-level key of template
-        intersect = template_as_set & data_as_set
-        return intersect
+        return template_as_set & data_as_set
     else:
         raise ValueError('JSON response has invalid Keys')
 
@@ -115,7 +114,7 @@ def validate(template, data):
         for key in dict_.items():
             if isinstance(key[1], dict):
                 retriever.update(key[1])
-        return retriever if retriever else None
+        return retriever or None
 
     def check_values(trimmed_template, trimmed_data):
         for values in i[-1]:

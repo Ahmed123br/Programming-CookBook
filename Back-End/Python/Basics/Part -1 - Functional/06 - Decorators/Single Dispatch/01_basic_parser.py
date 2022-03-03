@@ -7,7 +7,7 @@ def html_escape(arg):
 
 
 def html_int(a):
-    return f'{a}(<i>{str(hex(a))}</i>)'
+    return f'{a}(<i>{hex(a)}</i>)'
 
 
 def html_real(a):
@@ -21,7 +21,7 @@ def html_str(s):
 def html_list(l):
     items = (f'<li>{html_escape(item)}</li>'
              for item in l)
-    return f'<ul>\n' + '\n'.join(items) + '\n</ul>'
+    return '<ul>\\n' + '\n'.join(items) + '\n</ul>'
 
 
 def html_dict(d):
@@ -41,16 +41,12 @@ def htmlize(arg):
     # INT
     if isinstance(arg, int):
         return html_int(arg)
-    # FLOAT AND DECIMALS
-    elif isinstance(arg, float) or isinstance(arg, Decimal):
+    elif isinstance(arg, (float, Decimal)):
         return html_real(arg)
-    # STR
     elif isinstance(arg, str):
         return html_str(arg)
-    # LIST or TUPLE (Sequence)
-    elif isinstance(arg, list) or isinstance(arg, tuple):
+    elif isinstance(arg, (list, tuple)):
         return html_list(arg)
-    # DICT
     elif isinstance(arg, dict):
         return html_dict(arg)
     else: # default behavior - just html escape string representation
@@ -71,7 +67,7 @@ a multi-line string""", (1, 2, 3)]))
 def htmlize(arg):
     if isinstance(arg, int):
         return html_int(arg)
-    elif isinstance(arg, float) or isinstance(arg, Decimal):
+    elif isinstance(arg, (float, Decimal)):
         return html_real(arg)
     elif isinstance(arg, str):
         return html_str(arg)

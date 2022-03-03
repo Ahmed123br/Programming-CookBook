@@ -6,18 +6,18 @@ y = 10
 
 temp = sys.stdout
 sys.stdout = open('temp.txt', 'a')
-for i in range(10):
+for _ in range(10):
     print('SPAM' + 'EGGS')
 sys.stdout.close()
 sys.stdout = temp
 
 sys.stdout = open('log.txt', 'a')
-for i in range(100):
+for _ in range(100):
     print(x,y)
 
 print(x+y)
 with open('log2.txt', 'a') as f:
-    for i in range(100):
+    for _ in range(100):
         print(x * y, file=f)
 
 # you may also be able to use the __stdout__

@@ -19,8 +19,7 @@ def main():
         for proc in processes:
             proc.start()
             proc.join()
-        values = [queue.get() for _ in processes]
-        return values
+        return [queue.get() for _ in processes]
 
     calc_values = processor()
     print(calc_values)
@@ -46,8 +45,7 @@ def worker_process():
         for proc in processes:
             proc.start()
             proc.join()
-        values = [queue.get() for _ in processes]
-        return values
+        return [queue.get() for _ in processes]
 
     calc_values = processor()
     print(calc_values)
@@ -73,8 +71,7 @@ def queue_order():
         for proc in processes:
             proc.start()
             proc.join()
-        values = [queue.get() for _ in processes]
-        return values
+        return [queue.get() for _ in processes]
 
     unsorted_result = processor()
     print(unsorted_result)
@@ -126,7 +123,7 @@ def do_job(tasks_to_accomplish, tasks_that_are_done):
                 message to task_that_are_done queue
             '''
             print(task)
-            tasks_that_are_done.put(task + ' done by ' + current_process().name)
+            tasks_that_are_done.put(f'{task} done by {current_process().name}')
             time.sleep(.5)
     return True
 
@@ -139,10 +136,10 @@ def main():
     processes = []
 
     for i in range(number_of_task):
-        tasks_to_accomplish.put("Task no " + str(i))
+        tasks_to_accomplish.put(f"Task no {str(i)}")
 
     # creating processes
-    for w in range(number_of_processes):
+    for _ in range(number_of_processes):
         p = Process(target=do_job, args=(tasks_to_accomplish, tasks_that_are_done))
         processes.append(p)
         p.start()
@@ -150,7 +147,7 @@ def main():
     # completing process
     for p in processes:
         p.join()
-    print('==='*15 + ' < ' + f'ALL DONE' + ' > ' + '==='*15)
+    print('==='*15 + ' < ' + 'ALL DONE' + ' > ' + '==='*15)
     print('Getting tasks...')
 
     # print the output

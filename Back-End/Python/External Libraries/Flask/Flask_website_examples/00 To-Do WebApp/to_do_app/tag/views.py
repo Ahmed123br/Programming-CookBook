@@ -19,15 +19,13 @@ def create_tag():
         if form.check_tag(form.tag):
             err = form.check_tag(form.tag)
             flash(err)
-            return redirect(url_for('tag_bp.create_tag'))
         else:
             new_tag = form.tag.data
             new_tag = new_tag.strip()
             tag = Tag(tag=new_tag)
-            
+
             db.session.add(tag)
             db.session.commit()
             flash(f'Tag ---- {tag.tag} --- Created Succesfully!')
-            return redirect(url_for('tag_bp.create_tag'))
-
+        return redirect(url_for('tag_bp.create_tag'))
     return render_template('tag/create_tag.html', form=form)

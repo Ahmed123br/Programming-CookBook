@@ -6,7 +6,7 @@ file = 'tickets.csv'
 # 10/5/2016
 
 def conver_data(data_list):
-    converted_list = list()
+    converted_list = []
     for i in data_list:
         try:
             x = datetime.strptime(i, '%d/%m/%Y')
@@ -32,8 +32,7 @@ def gen_header(file):
             header = f.readline()
             header = header.split(',')
             header = ['_'.join(column.split()).lower() for column in header]
-            CarParkTicket = namedtuple('CarParkTicket', header)
-            return CarParkTicket
+            return namedtuple('CarParkTicket', header)
 
     yield gen_h()
 
@@ -55,15 +54,13 @@ def inject_data(file):
             my_row = get_str.split(',') # Make it back to List
             my_row = conver_data(my_row)
             try:
-                data = header(*my_row)
-                yield data
+                yield header(*my_row)
             except TypeError: # Catch if row has more than 9 items
                 if len(my_row) > 9:
-                    for item in range(len(my_row) - 9): # iterates over the difference of len
+                    for _ in range(len(my_row) - 9):
                         remove_item = my_row.pop() # removes last item
                         my_row[-1] += remove_item # attach it to the last one
-                        data = header(*my_row)
-                        yield data
+                        yield header(*my_row)
         except StopIteration:
             break
 
@@ -87,8 +84,7 @@ def gen_header(file):
             header = f.readline()
             header = header.split(',')
             header = ['_'.join(column.split()).lower() for column in header]
-            CarParkTicket = namedtuple('CarParkTicket', header)
-            return CarParkTicket
+            return namedtuple('CarParkTicket', header)
 
     yield gen_h()
 
@@ -109,7 +105,7 @@ def inject_data(file):
             yield header
         except TypeError: # Catch if row has more than 9 items
             if len(row) > 9:
-                for item in range(len(row) - 9): # iterates over the difference of len
+                for _ in range(len(row) - 9):
                     remove_item = row.pop() # removes last item
                     row[-1] += remove_item # attach it to the last one
                     header = header(*row)

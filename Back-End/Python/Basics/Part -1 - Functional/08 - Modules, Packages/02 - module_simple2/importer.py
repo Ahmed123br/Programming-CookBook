@@ -5,9 +5,8 @@ import types
 print('Running Importer.py')
 
 def import_(module_name, module_file, module_path):
-    if __name__ == '__main__':
-        if module_name in sys.modules:
-            return sys.modules[module_name]
+    if __name__ == '__main__' and module_name in sys.modules:
+        return sys.modules[module_name]
 
     module_rel_file_path = os.path.join(module_path, module_file)
     module_abs_file_path = os.path.abspath(module_rel_file_path)

@@ -21,18 +21,15 @@ app.config['SECRET_KEY'] = os.urandom(16)
 
 basedir = op.join(op.abspath(op.dirname(__file__)), 'data.sqlite')
 # Create in-memory database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + basedir
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{basedir}'
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
 base_path = op.join(op.dirname(__file__), 'static')
 
 
-#######################
-#---<CREATE MODELS>---#
-#######################
 class Location(db.Model):
-    
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Unicode(64))
 
@@ -100,9 +97,7 @@ class InlineModelForm(InlineFormAdmin):
 
     def on_model_change(self, form, model):
 
-        file_data = request.files.get(form.upload.name)
-
-        if file_data:
+        if file_data := request.files.get(form.upload.name):
             model.path = secure_filename(file_data.filename)
             file_data.save(op.join(base_path, model.path))
 

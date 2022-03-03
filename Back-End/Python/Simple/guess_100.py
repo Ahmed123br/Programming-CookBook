@@ -41,11 +41,10 @@ def main():
                     print('Warmer')
                 else:
                     print('Colder')
+            elif abs(guess - cpu_num) <= 10:
+                print('Warm!!!')
             else:
-                if abs(guess - cpu_num) <= 10:
-                    print('Warm!!!')
-                else:
-                    print('Cold!!!')
+                print('Cold!!!')
 
     init_game()
     while not game:

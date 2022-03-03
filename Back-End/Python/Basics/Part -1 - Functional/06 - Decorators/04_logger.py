@@ -92,7 +92,7 @@ def logit(logfile='out.log'):
     def logging_decorator(func):
         @wraps(func)
         def wrapped_function(*args, **kwargs):
-            log_string = func.__name__ + " was called"
+            log_string = f'{func.__name__} was called'
             print(log_string)
             # Open the logfile and append
             with open(logfile, 'a') as opened_file:
@@ -127,7 +127,7 @@ class logit(object):
         self.func = func
 
     def __call__(self, *args):
-        log_string = self.func.__name__ + " was called"
+        log_string = f'{self.func.__name__} was called'
         print(log_string)
         # Open the logfile and append
         with open(self._logfile, 'a') as opened_file:

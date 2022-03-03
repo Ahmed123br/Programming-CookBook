@@ -19,10 +19,9 @@ class Factorial:
         def __next__(self):
             if self.i >= self.length:
                 raise StopIteration
-            else:
-                result = math.factorial(self.i)
-                self.i += 1
-                return result
+            result = math.factorial(self.i)
+            self.i += 1
+            return result
 
 
 class Factorials:

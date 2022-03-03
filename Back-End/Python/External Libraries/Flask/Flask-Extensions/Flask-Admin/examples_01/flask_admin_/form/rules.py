@@ -45,17 +45,14 @@ class NestedRule(BaseRule):
 
         visible_fields = []
         for rule in self.rules:
-            for field in rule.visible_fields:
-                visible_fields.append(field)
+            visible_fields.extend(iter(rule.visible_fields))
         return visible_fields
     
     def __itet__(self):
         return self.rules
     
     def __call__(self, form, form_opts=None, field_args={}):
-        result = []
-        for r in self.rules:
-            result.append(f(form, form_opts, field_args))
+        result = [f(form, form_opts, field_args) for _ in self.rules]
         return Markup(self.separator.join(result))
 
 
@@ -67,9 +64,7 @@ class Text(BaseRule):
         self.escape = escape
     
     def __call__(self, form, form_opts=None, field_args={}):
-        if self.escape:
-            return self.text
-        return Markup(self.text)
+        return self.text if self.escape else Markup(self.text)
 
 class HTML(Text):
 
@@ -179,10 +174,7 @@ class Header(Macro):
 class FieldSet(NestedRule):
 
     def __init__(self, rules, header=None, separator=''):
-        if header:
-            rule_set = [Header(header)] + list(rules)
-        else:
-            rule_set = list(rules)
+        rule_set = [Header(header)] + list(rules) if header else list(rules)
         super(FieldSet, self).__init__(rule_set, separator=separator)
 
 
@@ -196,8 +188,7 @@ class RuleSet(object):
     def visible_fields(self):
         visible_fields = []
         for rule in self.rules:
-            for field in rule.visible_fields:
-                visible_fields.append(field)
+            visible_fields.extend(iter(rule.visible_fields))
         return visible_fields
     
     def convert_string(self, value):
@@ -219,6 +210,5 @@ class RuleSet(object):
     
     def __iter__(self):
         
-        for r in self.rules:
-            yield r
+        yield from self.rules
             

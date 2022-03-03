@@ -103,13 +103,13 @@ def lookup_account_by_id(account_id):
     # mock of various exceptions that could be raised getting an account from database
     if not isinstance(account_id, int) or account_id <= 0:
         raise ClientException(f'Account number {account_id} is invalid.')
-        
+
     if account_id < 100:
         raise DBConnectionError('Permanent failure connecting to database.')
     elif account_id < 200:
         raise NotAuthorizedError('User does not have permissions to read this account')
     elif account_id < 300:
-        raise NotFoundError(f'Account not found.')
+        raise NotFoundError('Account not found.')
     else:
         return Account(account_id, 'Savings')
 
@@ -299,13 +299,13 @@ def lookup_account_by_id(account_id):
         raise ClientException(f'Account number {account_id} is invalid.', 
                               f'account_id = {account_id}',
                               'type error - account number not an integer')
-        
+
     if account_id < 100:
         raise DBConnectionError('Permanent failure connecting to database.', 'db=db01')
     elif account_id < 200:
         raise NotAuthorizedError('User does not have permissions to read this account', f'account_id={account_id}')
     elif account_id < 300:
-        raise NotFoundError(f'Account not found.', f'account_id={account_id}')
+        raise NotFoundError('Account not found.', f'account_id={account_id}')
     else:
         return Account(account_id, 'Savings')
 

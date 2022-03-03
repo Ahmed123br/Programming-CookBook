@@ -72,18 +72,28 @@ def encode_multipart_formdata(fields, files):
     CRLF = '\r\n'
     L = []
     for (key, value) in fields:
-        L.append('--' + BOUNDARY)
-        L.append('Content-Disposition: form-data; name="%s"' % key)
-        L.append('')
-        L.append(value)
+        L.extend(
+            (
+                f'--{BOUNDARY}',
+                'Content-Disposition: form-data; name="%s"' % key,
+                '',
+                value,
+            )
+        )
+
     for (key, filename, value) in files:
-        L.append('--' + BOUNDARY)
-        L.append('Content-Disposition: form-data; name="%s"; filename="%s"' % (key, filename))
-        L.append('Content-Type: %s' % get_content_type(filename))
-        L.append('')
-        L.append(value)
-    L.append('--' + BOUNDARY + '--')
-    L.append('')
+        L.extend(
+            (
+                f'--{BOUNDARY}',
+                'Content-Disposition: form-data; name="%s"; filename="%s"'
+                % (key, filename),
+                'Content-Type: %s' % get_content_type(filename),
+                '',
+                value,
+            )
+        )
+
+    L.extend((f'--{BOUNDARY}--', ''))
     body = CRLF.join(L)
     content_type = 'multipart/form-data; boundary=%s' % BOUNDARY
     return content_type, body
@@ -106,7 +116,7 @@ if response[(x-21):(x+1)]!='EF=\"http://www.google':
 x+=145
 link=''
 while response[(x+1):(x+7)]!='amp;us':  #>here<
-    link=link+response[x]
+    link += response[x]
     x+=1
 print(link)
 

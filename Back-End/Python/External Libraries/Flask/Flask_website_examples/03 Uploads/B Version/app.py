@@ -45,17 +45,15 @@ class FileContent(db.Model):
 @app.route('/')
 def index():
 
-    pics = FileContent.query.all()
-    if pics: # This is because when you first run the app, if no pics in the db it will give you an error
-        all_pics = pics
-        if request.method == 'POST':
-
-            flash('Upload succesful!')
-            return redirect(url_for('upload'))  
-
-        return render_template('index.html', all_pic=all_pics)
-    else:
+    if not (pics := FileContent.query.all()):
         return render_template('index.html')
+    all_pics = pics
+    if request.method == 'POST':
+
+        flash('Upload succesful!')
+        return redirect(url_for('upload'))  
+
+    return render_template('index.html', all_pic=all_pics)
 
 # Query
 @app.route('/query')
@@ -67,8 +65,7 @@ def query():
 # Render the pics
 def render_picture(data):
     
-    render_pic = base64.b64encode(data).decode('ascii') 
-    return render_pic
+    return base64.b64encode(data).decode('ascii')
 
 # Upload
 @app.route('/upload', methods=['POST'])

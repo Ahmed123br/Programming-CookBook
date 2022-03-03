@@ -13,8 +13,7 @@ user_type = ['Admin', 'Supervisor', 'Moderator', 'Member']
 
 def user_logged():
     if 'name' in session:
-        name = session['name']
-        return name
+        return session['name']
     flash('You must log in!')
 
 
@@ -110,20 +109,19 @@ def theme():
     if not check_user:
         return redirect(url_for('signup'))
 
-    if check_user:
-        user_mode = request.form
-        if user_mode.get('light'):
-            session['MODE'] = user_mode.get('light')
-            new_mode = session['MODE']
-            flash(f'Mode is {new_mode}')
-            return redirect(url_for('index'))
-        elif user_mode.get('dark'):
-            session['MODE'] = user_mode.get('dark')
-            new_mode = session['MODE']
-            flash(f'Mode is {new_mode}')
-            return redirect(url_for('index'))
-       
-        return render_template('session/theme.html', logged=check_user)
+    user_mode = request.form
+    if user_mode.get('light'):
+        session['MODE'] = user_mode.get('light')
+        new_mode = session['MODE']
+        flash(f'Mode is {new_mode}')
+        return redirect(url_for('index'))
+    elif user_mode.get('dark'):
+        session['MODE'] = user_mode.get('dark')
+        new_mode = session['MODE']
+        flash(f'Mode is {new_mode}')
+        return redirect(url_for('index'))
+
+    return render_template('session/theme.html', logged=check_user)
  
 
 

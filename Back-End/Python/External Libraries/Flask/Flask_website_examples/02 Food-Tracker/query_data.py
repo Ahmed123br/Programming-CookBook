@@ -70,25 +70,25 @@ def show_days(results):
 
     date_results = []
     for i in results:
-        single_date = {}
+        single_date = {
+            'entry_date': i['entry_date'],
+            'protein': i['protein'],
+            'carbohydrates': i['carbohydrates'],
+            'fat': i['fat'],
+            'calories': i['calories'],
+            'pretty_date': extract_date(i),
+        }
 
-        single_date['entry_date'] = i['entry_date']
-        single_date['protein'] = i['protein']
-        single_date['carbohydrates'] = i['carbohydrates']
-        single_date['fat'] = i['fat']
-        single_date['calories'] = i['calories']
-        # Call extrac date to proccess the date 
-        single_date['pretty_date'] = extract_date(i)
+
         date_results.append(single_date)
- 
+
     return date_results
 
 # Get All food, for select + <option> in HTML
 def get_food(db):
 
     food_cur = db.execute('select id, name from food')
-    food_results = food_cur.fetchall()
-    return food_results
+    return food_cur.fetchall()
 
 #Query All food for adding into the Pase view 
 def food_log(db, date):
@@ -103,5 +103,4 @@ def food_log(db, date):
     join food on food.id = food_date.food_id
     where log_date.entry_date= (?)''', [date])
 
-    get_log = log_cur.fetchall()
-    return get_log
+    return log_cur.fetchall()

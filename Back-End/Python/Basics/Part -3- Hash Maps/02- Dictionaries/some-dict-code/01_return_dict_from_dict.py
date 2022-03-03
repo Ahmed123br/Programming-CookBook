@@ -2,9 +2,8 @@
 composers = {'Johann': 65, 'Ludwig': 56, 'Frederic': 39, 'Wolfgang': 35}
 
 item_dict = sorted(composers.items(), key=lambda x: x[1])
-new_dict = {k: v for k, v in item_dict}
-other_dict = {k: v for k, v in
-              sorted(composers.items(), key=lambda x: x[1])}
+new_dict = dict(item_dict)
+other_dict = dict(sorted(composers.items(), key=lambda x: x[1]))
 print(new_dict)
 print(other_dict)
 

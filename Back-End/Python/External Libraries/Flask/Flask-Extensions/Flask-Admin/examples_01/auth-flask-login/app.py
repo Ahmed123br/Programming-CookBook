@@ -217,9 +217,9 @@ def build_sample_db():
     Populate a small db with some example entries.
     '''
 
-    import string 
+    import string
     import random
-    
+
     db.drop_all()
     db.create_all()
     #Passwords is hashed, to use plaintext passowrd use instead:
@@ -241,10 +241,16 @@ def build_sample_db():
     for i in range(len(first_names)):
         user = User()
         user.first_name = first_names[i]
-        user.last_name = last_names[i] 
-        user.login = user.first_name.lower() 
-        user.email = user.login + '@example.com'
-        user.password = generate_password_hash(''.join(random.choice(string.ascii_lowercase + string.digits) for i in range(10)))
+        user.last_name = last_names[i]
+        user.login = user.first_name.lower()
+        user.email = f'{user.login}@example.com'
+        user.password = generate_password_hash(
+            ''.join(
+                random.choice(string.ascii_lowercase + string.digits)
+                for _ in range(10)
+            )
+        )
+
         db.session.add(user)
     db.session.commit()
     return

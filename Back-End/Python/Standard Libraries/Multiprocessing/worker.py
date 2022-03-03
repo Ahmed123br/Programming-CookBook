@@ -2,9 +2,7 @@ import multiprocessing as mp
 import math
 
 def worker(nums, out_q):
-    outdict = {}
-    for n in nums:
-        outdict[n] = 2 * n
+    outdict = {n: 2 * n for n in nums}
     out_q.put(outdict)
 
 def mp_factorizer(nums, nprocs):
@@ -21,7 +19,7 @@ def mp_factorizer(nums, nprocs):
         p.start()
 
     resultdict = {}
-    for i in range(nprocs):
+    for _ in range(nprocs):
         resultdict.update(out_q.get())
 
     for p in procs:

@@ -18,8 +18,7 @@ def cast_row(data_types, data_row):
 cars = []
 
 with open('cars.csv') as file:
-    row_index = 0
-    for line in file:
+    for row_index, line in enumerate(file):
         if row_index == 0:
             headers = line.strip('\n').split(';')
             Car = namedtuple('Car', headers)
@@ -30,10 +29,8 @@ with open('cars.csv') as file:
             data = line.strip('\n').split(';')
             data = cast_row(data_types, data)
             car = Car(*data)
-        
-            cars.append(car)
-        row_index += 1
 
+            cars.append(car)
 print(cars[0])
 
 

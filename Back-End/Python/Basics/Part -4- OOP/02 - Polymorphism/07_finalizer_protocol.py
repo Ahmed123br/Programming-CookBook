@@ -55,8 +55,7 @@ try:
     p.gen_ex()
 except ValueError as ex:
     error = ex
-    print(ex)
-
+    print(error)
 #Something went bump...
 print(ref_count(p_id)) # 2
 dir(error)

@@ -28,10 +28,9 @@ class CityIterator:
         print('Calling __next__')
         if self._index >= len(self._city_obj):
             raise StopIteration
-        else:
-            item = self._city_obj._cities[self._index]
-            self._index += 1
-            return item
+        item = self._city_obj._cities[self._index]
+        self._index += 1
+        return item
 
 cities = Cities()
 cities[0]

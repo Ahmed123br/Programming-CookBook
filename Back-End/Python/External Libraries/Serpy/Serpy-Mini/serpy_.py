@@ -79,11 +79,7 @@ def _compile_field_to_tuple(field, name, serializer_cls):
         #If getter is None means that the default Field was used
         getter = serializer_cls.default_getter(field.attr or name)
 
-    # Only set a to_value function if it has been overridden for performance.
-    to_value = None
-    if field._is_to_value_overridden():
-        to_value = field.to_value
-
+    to_value = field.to_value if field._is_to_value_overridden() else None
     # Set the field name to a supplied label; defaults to the attribute name.
     name = field.label or name
 
@@ -113,13 +109,13 @@ class SerializerMeta(type):
 
     def __new__(cls, name, bases, attrs):
         # Fields declared directly on the class.
-        direct_fields = {}
-        # Take all the Fields from the attributes.
-        for attr_name, field in attrs.items():
-            # print(attr_name, field)
-            if isinstance(field, Field):
-                direct_fields[attr_name] = field ## serpy.Field = Added in a separate Dict
-        for k in direct_fields.keys():
+        direct_fields = {
+            attr_name: field
+            for attr_name, field in attrs.items()
+            if isinstance(field, Field)
+        }
+
+        for k in direct_fields:
             del attrs[k] ## Removes from the Attrs the Fields instances
 
         real_cls = super(SerializerMeta, cls).__new__(cls, name, bases, attrs)
@@ -127,7 +123,6 @@ class SerializerMeta(type):
         field_map = cls._get_fields(direct_fields, real_cls) ### [field_map]
 
         compiled_fields = cls._compile_fields(field_map, real_cls) # -> tuple(name, getter, to_value, field.call, field.required,
-                                                                        #field.getter_takes_serializer)
         real_cls._field_map = field_map # Map (Dictionary) with all Serpy.Fieds
         real_cls._compiled_fields = tuple(compiled_fields) # Tuple with Serpy Field and Filed Class Vars() [3]
         return real_cls

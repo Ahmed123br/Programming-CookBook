@@ -1,8 +1,8 @@
 from timeit import timeit
 
 n = 100_000
-s = {i for i in range(n)}
-l = [i for i in range(n)]
+s = set(range(n))
+l = list(range(n))
 d = {i:None for i in range(n)}
 
 
@@ -38,9 +38,9 @@ print('list:', t_list)
 print('set:', t_set)
 print('dict:', t_dict)
 
-l = list()
+l = []
 s = set()
-d = dict()
+d = {}
 
 print('#', 'dict', 'set', 'list')
 for i in range(50):
@@ -49,9 +49,9 @@ for i in range(50):
     s.add(i)
     d[i] = None
 
-l = list()
+l = []
 s = set()
-d = dict()
+d = {}
 
 print('#', 'dict', 'set', 'list')
 for i in range(50):

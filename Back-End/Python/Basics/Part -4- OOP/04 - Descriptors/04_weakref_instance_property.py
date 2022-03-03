@@ -10,9 +10,8 @@ class IntegerValue:
     def __get__(self, instance, owner_class):
         if instance is None:
             return self
-        else:
-            value_tuple = self.values.get(id(instance))
-            return value_tuple[1]  # return the associated value, not the weak ref
+        value_tuple = self.values.get(id(instance))
+        return value_tuple[1]  # return the associated value, not the weak ref
         
     def _remove_object(self, weak_ref):
         print(f'removing dead entry for {weak_ref}')
@@ -34,9 +33,8 @@ class IntegerValue:
     def __get__(self, instance, owner_class):
         if instance is None:
             return self
-        else:
-            value_tuple = self.values.get(id(instance))
-            return value_tuple[1]  # return the associated value, not the weak ref
+        value_tuple = self.values.get(id(instance))
+        return value_tuple[1]  # return the associated value, not the weak ref
         
     def _remove_object(self, weak_ref):
         # reverse_lookup = [key for key, value in self.values.items()
@@ -95,14 +93,13 @@ class ValidString:
     def __get__(self, instance, owner_class):
         if instance is None:
             return self
-        else:
-            value_tuple = self.data.get(id(instance))
-            return value_tuple[1]  
+        value_tuple = self.data.get(id(instance))
+        return value_tuple[1]  
         
     def _finalize_instance(self, weak_ref):
-        reverse_lookup = [key for key, value in self.data.items()
-                        if value[0] is weak_ref]
-        if reverse_lookup:
+        if reverse_lookup := [
+            key for key, value in self.data.items() if value[0] is weak_ref
+        ]:
             # key found
             key = reverse_lookup[0]
             del self.data[key]

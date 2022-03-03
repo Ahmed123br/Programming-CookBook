@@ -13,33 +13,33 @@ from multiprocessing import Process, Lock, Value
 
 
 def add_500_no_mp(total):
-    for i in range(100):
+    for _ in range(100):
         time.sleep(0.01)
         total += 5
     return total
 
 
 def sub_500_no_mp(total):
-    for i in range(100):
+    for _ in range(100):
         time.sleep(0.01)
         total -= 5
     return total
 
 
 def add_500_no_lock(total):
-    for i in range(100):
+    for _ in range(100):
         time.sleep(0.01)
         total.value += 5
 
 
 def sub_500_no_lock(total):
-    for i in range(100):
+    for _ in range(100):
         time.sleep(0.01)
         total.value -= 5
 
 
 def add_500_lock(total, lock):
-    for i in range(100):
+    for _ in range(100):
         time.sleep(0.01)
         lock.acquire()
         total.value += 5
@@ -47,7 +47,7 @@ def add_500_lock(total, lock):
 
 
 def sub_500_lock(total, lock):
-    for i in range(100):
+    for _ in range(100):
         time.sleep(0.01)
         lock.acquire()
         total.value -= 5

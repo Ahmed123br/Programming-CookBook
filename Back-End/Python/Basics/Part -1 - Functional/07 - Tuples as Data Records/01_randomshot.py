@@ -13,17 +13,13 @@ def random_shot(radius):
     random_x = uniform(-radius, radius)
     random_y = uniform(-radius, radius)
 
-    if sqrt(random_x ** 2 + random_y ** 2) <= radius:
-        is_in_circle = True
-    else:
-        is_in_circle = False
-
+    is_in_circle = sqrt(random_x ** 2 + random_y ** 2) <= radius
     return random_x, random_y, is_in_circle
 
 
 num_attempts = 1_000_000
 count_inside = 0
-for i in range(num_attempts):
+for _ in range(num_attempts):
     *_, is_in_circle = random_shot(5)
     if is_in_circle:
         count_inside += 1

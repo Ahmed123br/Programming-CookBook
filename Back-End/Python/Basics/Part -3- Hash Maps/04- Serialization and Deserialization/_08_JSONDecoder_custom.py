@@ -63,11 +63,10 @@ j_other = '''
 
 class CustomDecoder(json.JSONDecoder):
     def decode(self, arg):
-        if 'points' in arg:
-            obj = json.loads(arg)
-            return "parsing object for points"
-        else:
+        if 'points' not in arg:
             return super().decode(arg)
+        obj = json.loads(arg)
+        return "parsing object for points"
 
 print(json.loads(j_points, cls=CustomDecoder))
 json.loads(j_other, cls=CustomDecoder)

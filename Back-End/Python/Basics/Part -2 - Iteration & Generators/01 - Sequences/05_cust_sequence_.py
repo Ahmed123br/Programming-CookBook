@@ -6,10 +6,10 @@ class MyClass:
         return f'MyClass(name={self.name})'
 
     def __add__(self, other):
-        return MyClass(self.name + ' ' + other.name)
+        return MyClass(f'{self.name} {other.name}')
 
     def __iadd__(self, other):
-        self.name += ' ' + other.name
+        self.name += f' {other.name}'
         return self
 
     def __mul__(self, n):

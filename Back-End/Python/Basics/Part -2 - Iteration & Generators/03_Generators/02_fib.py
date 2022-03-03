@@ -4,7 +4,7 @@ from timeit import timeit
 def fib(n):
     fib_0 = 1
     fib_1 = 1
-    for i in range(n-1):
+    for _ in range(n-1):
         fib_0, fib_1 = fib_1, fib_0 + fib_1
     return fib_1
 
@@ -27,10 +27,9 @@ class Fib:
         def __next__(self):
             if self.i >= self.n:
                 raise StopIteration
-            else:
-                result = fib(self.i)
-                self.i += 1
-                return result
+            result = fib(self.i)
+            self.i += 1
+            return result
 
 
 def fib_gen(n):
@@ -38,7 +37,7 @@ def fib_gen(n):
     yield fib_0
     fib_1 = 1
     yield fib_1
-    for i in range(n-2):
+    for _ in range(n-2):
         fib_0, fib_1 = fib_1, fib_0 + fib_1
         yield fib_1
 

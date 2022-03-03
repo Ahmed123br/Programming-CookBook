@@ -87,10 +87,7 @@ class Number:
         self.x = x
         
     def __eq__(self, other):
-        if isinstance(other, Number):
-            return self.x == other.x
-        else:
-            return False
+        return self.x == other.x if isinstance(other, Number) else False
     
     def __hash__(self):
         return hash(self.x)
@@ -100,10 +97,7 @@ class SameHash:
         self.x = x
         
     def __eq__(self, other):
-        if isinstance(other, SameHash):
-            return self.x == other.x
-        else:
-            return False
+        return self.x == other.x if isinstance(other, SameHash) else False
     
     def __hash__(self):
         return 100

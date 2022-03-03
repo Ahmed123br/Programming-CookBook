@@ -19,10 +19,7 @@ class Int:
         instance.__dict__[self.name] = value
         
     def __get__(self, instance, owner_class):
-        if instance is None:
-            return self
-        else:
-            return instance.__dict__.get(self.name, None)
+        return self if instance is None else instance.__dict__.get(self.name, None)
 
 
 class Point2D:
@@ -99,12 +96,11 @@ class Point2DSequence:
     def __get__(self, instance, cls):
         if instance is None:
             return self
-        else:
-            if self.name not in instance.__dict__:
-                # current point list has not been defined,
-                # so let's create an empty list
-                instance.__dict__[self.name] = []
-            return instance.__dict__.get(self.name)
+        if self.name not in instance.__dict__:
+            # current point list has not been defined,
+            # so let's create an empty list
+            instance.__dict__[self.name] = []
+        return instance.__dict__.get(self.name)
 
 class Polygon:
     vertices = Point2DSequence(min_length=3)
@@ -270,7 +266,7 @@ p[0], p[1], p[2]
 
 # (Point2D(x=0, y=0), Point2D(x=1, y=0), Point2D(x=1, y=1))
 
-p[0:2]
+p[:2]
 
 # [Point2D(x=0, y=0), Point2D(x=1, y=0)]
 

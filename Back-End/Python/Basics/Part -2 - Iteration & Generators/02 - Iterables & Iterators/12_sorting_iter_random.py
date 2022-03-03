@@ -31,10 +31,9 @@ class RandomInts:
         def __next__(self):
             if self.num_requests >= self.length:
                 raise StopIteration
-            else:
-                result = random.randint(self.lower, self.upper)
-                self.num_requests += 1
-                return result
+            result = random.randint(self.lower, self.upper)
+            self.num_requests += 1
+            return result
 
 
 randoms = RandomInts(10)

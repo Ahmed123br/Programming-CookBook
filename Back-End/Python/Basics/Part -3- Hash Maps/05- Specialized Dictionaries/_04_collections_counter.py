@@ -46,8 +46,7 @@ for c in c1.elements():
 
 l = []
 for i in range(1, 11):
-    for _ in range(i):
-        l.append(i)
+    l.extend(i for _ in range(i))
 print(l)
 
 c1 = Counter()
@@ -86,7 +85,7 @@ class RepeatIterable:
 
     def elements(self):
         for k, frequency in self.d.items():
-            for i in range(frequency):
+            for _ in range(frequency):
                 yield k
 
 

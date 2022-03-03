@@ -56,12 +56,9 @@ class AjaxSelect2Widget(object):
             kwargs['value'] = separator.join(ids)
             kwargs['data-json'] = json.dumps(result)
             kwargs['data-multiple'] = u'1'
-        else:
-            data = field.loader.format(field.data)
-
-            if data:
-                kwargs['value'] = data[0]
-                kwargs['data-json'] = json.dumps(data)
+        elif data := field.loader.format(field.data):
+            kwargs['value'] = data[0]
+            kwargs['data-json'] = json.dumps(data)
         placeholder = field.loader.options.get('placeholder', 'Please select Model')
         kwargs.setdefault('data-placeholder', placeholder)
         minimum_input_length = int(field.loader.options.get('minimum_input_length', 1))

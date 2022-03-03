@@ -20,9 +20,7 @@ with File('test.txt', 'w') as f:
 def test():
     with File('test.txt', 'w') as f:
         f.write('This is a late parrot')
-        if True:
-            return f
-        print(f.closed)
+        return f
     print(f.closed)
 
 

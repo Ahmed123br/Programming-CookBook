@@ -80,10 +80,7 @@ persons = {
 
 eye_colors = {}
 for person, details in persons.items():
-    if 'eye_color' in details:
-        color = details['eye_color']
-    else:
-        color = 'unknown'
+    color = details['eye_color'] if 'eye_color' in details else 'unknown'
     if color in eye_colors:
         eye_colors[color].append(person)
     else:

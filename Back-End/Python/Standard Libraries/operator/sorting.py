@@ -21,7 +21,7 @@ sorted(l, key=operator.itemgetter(0))
 
 # Slicing
 l = [1, 2, 3, 4]
-l[0:2]
+l[:2]
 l[0:2] = ['a', 'b', 'c']
 print(l)
 # ['a', 'b', 'c', 3, 4]

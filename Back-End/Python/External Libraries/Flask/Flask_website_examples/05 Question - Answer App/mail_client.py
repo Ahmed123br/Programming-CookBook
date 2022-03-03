@@ -39,8 +39,8 @@ def qst_answered(user_name, question_id):
         msg = Message(
             subject=msg_1_subject + str(question_id),
             recipients=[''],
-            body='Hi ' + user_name + msg_1_body,
-            html= '',
+            body=f'Hi {user_name}{msg_1_body}',
+            html='',
             sender='',
             cc=[],
             bcc=[],
@@ -48,11 +48,12 @@ def qst_answered(user_name, question_id):
             reply_to=[],
             date=2,
             charset='',
-            extra_headers={'':''},
+            extra_headers={'': ''},
             mail_options=[],
-            rcpt_options=[]
+            rcpt_options=[],
         )
-        
+
+
         return mail.send(msg)
 
 def qst_disabled(user_name, question_id):
@@ -60,8 +61,8 @@ def qst_disabled(user_name, question_id):
         msg = Message(
             subject=msg_2_subject,
             recipients=[''],
-            body='Hi ' + user_name + msg_2_body + str(question_id) + msg_2_body_2,
-            html= '',
+            body=f'Hi {user_name}{msg_2_body}{str(question_id)}{msg_2_body_2}',
+            html='',
             sender='',
             cc=[],
             bcc=[],
@@ -69,8 +70,9 @@ def qst_disabled(user_name, question_id):
             reply_to=[],
             date=2,
             charset='',
-            extra_headers={'':''},
+            extra_headers={'': ''},
             mail_options=[],
-            rcpt_options=[]
+            rcpt_options=[],
         )
+
         return mail.send(msg)

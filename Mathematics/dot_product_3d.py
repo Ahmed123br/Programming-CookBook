@@ -49,7 +49,7 @@ v = (10, 20, 30)
 list(zip(u, v))
 
 print([e[0] * e[1] for e in zip(a, b)])
-print(sum([e[0] * e[1] for e in zip(a, b)]))
+print(sum(e[0] * e[1] for e in zip(a, b)))
 print(dot_product(a, b))
 
 pt4d_1 = (1, 1, 1, 10)

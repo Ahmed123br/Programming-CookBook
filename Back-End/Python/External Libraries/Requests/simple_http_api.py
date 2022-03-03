@@ -105,7 +105,7 @@ class API:
     def _send(self, endpoint, method='GET', data=None, headers=None):
 
         response_result = None
-        headers = headers if headers else self.HEADER
+        headers = headers or self.HEADER
         try:
             response = self.api.request(method, endpoint, data=data, headers=headers,  timeout=3)
             response.raise_for_status()
@@ -154,7 +154,7 @@ class API:
         try:
             data = response.json()
         except json.decoder.JSONDecodeError as json_error:
-            _logger.error(f'Could not Read Object response from Cover Manager')
+            _logger.error('Could not Read Object response from Cover Manager')
             _logger.error(f'Error -> {json_error}')
             traceback.print_exc()
             return 'error', json_error

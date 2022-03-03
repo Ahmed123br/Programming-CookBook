@@ -51,11 +51,7 @@ def create():
     if request.method == "POST":
         title = request.form["title"]
         body = request.form["body"]
-        error = None
-
-        if not title:
-            error = "Title is required."
-
+        error = "Title is required." if not title else None
         if error is not None:
             flash(error)
         else:
@@ -76,16 +72,12 @@ def create():
 def update(id):
     """Update a post if the current user is the author."""
     post = get_post(id)
-    
+
     # Update
     if request.method == "POST":
         title = request.form["title"]
         body = request.form["body"]
-        error = None
-
-        if not title:
-            error = "Title is required."
-
+        error = "Title is required." if not title else None
         if error is not None:
             flash(error)
         else:

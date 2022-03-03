@@ -21,9 +21,8 @@ with open_file('test.txt') as f:
 
 @contextmanager
 def timer():
-    stats = dict()
     start = perf_counter()
-    stats['start'] = start
+    stats = {'start': start}
     yield stats
     end = perf_counter()
     stats['end'] = end

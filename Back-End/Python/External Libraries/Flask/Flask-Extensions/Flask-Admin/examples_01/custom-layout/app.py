@@ -20,7 +20,7 @@ basedir = op.join(op.abspath(op.dirname(__file__)), app.config['DATABASE_FILE'])
 
 app.config['FLASK_ADMIN_SWATCH'] = 'flatly'
 app.config['SECRET_KEY']  = my_secret
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + basedir
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{basedir}'
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -104,8 +104,8 @@ def build_sample_db():
 
     for i in range(len(first_names)):
         user = User()
-        user.name = first_names[i] + " " + last_names[i]
-        user.email = first_names[i].lower() + "@example.com"
+        user.name = f'{first_names[i]} {last_names[i]}'
+        user.email = f'{first_names[i].lower()}@example.com'
         db.session.add(user)
 
     sample_text = [

@@ -42,9 +42,8 @@ print(d2)
 def popitem(d, last=True):
     if last:
         return d.popitem()
-    else:
-        first_key = next(iter(d.keys()))
-        return first_key, d.pop(first_key)
+    first_key = next(iter(d.keys()))
+    return first_key, d.pop(first_key)
 
 
 d2 = dict(a=1, b=2, c=3, d=4)
@@ -126,10 +125,7 @@ d2 = {'b': 20, 'c': 30, 'a': 10}
 
 def dict_equal_sensitive(d1, d2):
     if d1 == d2:
-        for k1, k2 in zip(d1.keys(), d2.keys()):
-            if k1 != k2:
-                return False
-        return True
+        return all(k1 == k2 for k1, k2 in zip(d1.keys(), d2.keys()))
     else:
         return False
 
@@ -146,10 +142,7 @@ def dict_equal_sensitive(d1, d2):
 
 
 def create_dict(n=100):
-    d = dict()
-    for i in range(n):
-        d[i] = i
-    return d
+    return {i: i for i in range(n)}
 
 def create_ordered_dict(n=100):
     d = OrderedDict()

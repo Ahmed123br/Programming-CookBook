@@ -55,16 +55,15 @@ class lazyprop:
     def __get__(self, instance, cls):
         if instance is None:
             return self
-        else:
-            value = instance.__dict__[self.func.__name__] = self.func(instance)
-            return value
+        value = instance.__dict__[self.func.__name__] = self.func(instance)
+        return value
 
 class D:
     def __init__(self, greeting='Hello'):
         self.greeting = greeting
 
 def greet(self):
-    return self.greeting + " world!"
+    return f'{self.greeting} world!'
 
 
 # Beazley's version works...

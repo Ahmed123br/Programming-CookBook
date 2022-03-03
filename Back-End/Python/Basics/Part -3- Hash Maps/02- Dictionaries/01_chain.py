@@ -5,11 +5,7 @@ def cat_key(c):
     categories = {' ': None,
             string.ascii_lowercase: 'lower',
             string.ascii_uppercase: 'upper'}
-    for key in categories:
-        if c in key:
-            return categories[key]
-    else:
-        return 'other'
+    return next((value for key, value in categories.items() if c in key), 'other')
 
 print(cat_key('a'), cat_key('A'), cat_key('!'), cat_key(' '))
 
@@ -32,10 +28,9 @@ print(cat_key('a'), cat_key('A'), cat_key('!'), cat_key(' '))
 
 categories = {}
 for c in text:
-    key = cat_key(c)
-    if key:
+    if key := cat_key(c):
         categories.setdefault(key, set()).add(c)
-        
+
 for cat in categories:
     print(f'{cat}:', ''.join(categories[cat]))
 

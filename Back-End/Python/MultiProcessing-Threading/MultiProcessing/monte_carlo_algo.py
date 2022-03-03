@@ -10,8 +10,7 @@ def pi_part(n):
 
     count = 0
 
-    for i in range(int(n)):
-
+    for _ in range(int(n)):
         x, y = random.random(), random.random()
 
         r = sqrt(pow(x, 2) + pow(y, 2))
@@ -31,7 +30,7 @@ def main():
 
     n = 100_000_000
 
-    part_count = [n/np for i in range(np)]
+    part_count = [n/np for _ in range(np)]
 
     with Pool(processes=np) as pool:
 

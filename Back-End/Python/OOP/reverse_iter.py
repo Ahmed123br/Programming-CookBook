@@ -32,15 +32,11 @@ class CardDeck:
         def __next__(self):
             if self.i >= self.length:
                 raise StopIteration
-            else:
-                if self.reverse: # Starts and Index -1 then subtracts self.i at each next iter
-                    index = self.length - 1 - self.i
-                else:
-                    index = self.i
-                suit = _SUITS[index // len(_RANKS)]
-                rank = _RANKS[index % len(_RANKS)]
-                self.i += 1
-                return Card(rank, suit)
+            index = self.length - 1 - self.i if self.reverse else self.i
+            suit = _SUITS[index // len(_RANKS)]
+            rank = _RANKS[index % len(_RANKS)]
+            self.i += 1
+            return Card(rank, suit)
 
 
 deck = CardDeck()

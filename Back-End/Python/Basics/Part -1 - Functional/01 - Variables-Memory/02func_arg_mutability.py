@@ -1,7 +1,7 @@
 
 def process(s):
     print('Initial s# = {0}'.format(hex(id(s))))
-    s = s + 'world'
+    s = f'{s}world'
     print('s after change # = {0}'.format(hex(id(s))))
 
 

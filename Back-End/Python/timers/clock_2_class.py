@@ -27,5 +27,5 @@ class Clock:
 time = datetime.utcnow()
 
 clock = Clock(time.hour, time.minute)
-for i in range(10):
+for _ in range(10):
     print(next(clock))

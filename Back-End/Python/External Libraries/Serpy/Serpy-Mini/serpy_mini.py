@@ -66,12 +66,14 @@ class SerializerBase(Field):
 
 class SerializerMeta(type):
     def __new__(cls, name, bases, attrs):
-        direct_fields = {}
+        direct_fields = {
+            attr_name: field
+            for attr_name, field in attrs.items()
+            if isinstance(field, Field)
+        }
 
-        for attr_name, field in attrs.items():
-            if isinstance(field, Field):
-                direct_fields[attr_name] = field
-        for k in direct_fields.keys():
+
+        for k in direct_fields:
             del attrs[k]
 
         new_cls = super(SerializerMeta, cls).__new__(cls, name, bases, attrs)
@@ -102,9 +104,7 @@ class SerializerMeta(type):
         getter = field.as_getter(name, serializer_cls)
         if getter is None:
             getter = serializer_cls.default_getter(field.attr or name)
-        to_value = None
-        if field.to_value_overridden():
-            to_value = field.to_value
+        to_value = field.to_value if field.to_value_overridden() else None
         name = field.label or name
         return name, getter, to_value, field.call, field.required, field.getter_flag
 
@@ -129,11 +129,10 @@ class Serializer(SerializerBase, metaclass=SerializerMeta):
 
     def injects(self, instance):
         fields = self._compiled_fields # Attr from Metaclass SerializerMeta
-        if self.many:
-            serialize = self._serialize
-            return [serialize(o, fields) for o in instance]
-        else:
+        if not self.many:
             return self._serialize(instance, fields)
+        serialize = self._serialize
+        return [serialize(o, fields) for o in instance]
 
     def _serialize(self, instance, fields):
 

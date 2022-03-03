@@ -53,10 +53,10 @@ def downloader(url, search=False):
     except Exception as e:
         if search:
             err = f'error while downloading page {url}'
-            logger(err, 'error')
         else:
             err = f'Unexpected error while downloading image {url}\nerror type:{type(e)}, args:{e.args}'
-            logger(err, 'error')
+
+        logger(err, 'error')
 
 
 def sniff_page(search_url):
@@ -68,17 +68,13 @@ def sniff_page(search_url):
          set of links if found else empty set
     """
     page_content = downloader(search_url, search=True)
-    page_content = str(page_content)
-    if page_content:
+    if page_content := str(page_content):
         link_list = re.findall('src="(.*?)"', page_content)
-        if len(link_list) == 0:
-            msg = f'Found 0 links from page {search_url}'
-            logger(msg, 'warning')
-            return set()
-        else:
+        if len(link_list) != 0:
             return set(link_list)
-    else:
-        return set()
+        msg = f'Found 0 links from page {search_url}'
+        logger(msg, 'warning')
+    return set()
 
 
 def gen_dir(download_dir, main_keyword):
@@ -94,7 +90,7 @@ def gen_dir(download_dir, main_keyword):
 def gen_name(count, img_dir):
     """Helper function | Generate (holefully) unique IDs for any pictures, prevents name collisions"""
     id_ = str(hex(random.randrange(1000)))
-    file_name = id_ + f'_{count}.jpg'
+    file_name = f'{id_}_{count}.jpg'
     file_path = img_dir + file_name
     return file_name, file_path
 
@@ -114,7 +110,7 @@ def extract_links(main_keyword, extra_keywords, process):
         for j in range(len(extra_keywords)):
             msg = f'Process {process} supplemented keyword: {extra_keywords[j]}'
             logger(msg, 'info')
-            search_url = URL_ROOT + quote(main_keyword + ' ' + extra_keywords[j]) + URL_END
+            search_url = URL_ROOT + quote(f'{main_keyword} {extra_keywords[j]}') + URL_END
             print(search_url)
             image_links = image_links.union(sniff_page(search_url))
     else:
@@ -166,8 +162,7 @@ def download_images(main_keyword, extra_keywords=None, download_dir=None, total=
             logger(msg, 'info')
             break
         else:
-            data = downloader(link) # Call the Downloader, as search is not passed it set to download one item only
-            if data:
+            if data := downloader(link):
                 file_name, file_path = gen_name(count, img_dir)
                 with open(file_path, 'wb') as wf:
                     wf.write(data)

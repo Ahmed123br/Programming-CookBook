@@ -120,11 +120,7 @@ def pop_all_ordered_dict(n=1000, last=True):
 
 def pop_all_deque(n=1000, last=True):
     dq = create_deque(n)
-    if last:
-        pop = dq.pop
-    else:
-        pop = dq.popleft
-
+    pop = dq.pop if last else dq.popleft
     while True:
         try:
             pop()
@@ -150,11 +146,12 @@ print(timeit('create_deque(10_000)',
 n = 10_000
 number = 1_000
 
-results = dict()
+results = {
+    'dict_create': timeit(
+        'create_ordereddict(n)', globals=globals(), number=number
+    )
+}
 
-results['dict_create'] = timeit('create_ordereddict(n)',
-                                globals=globals(),
-                                number=number)
 
 results['deque_create'] = timeit('create_deque(n)',
                                  globals=globals(),

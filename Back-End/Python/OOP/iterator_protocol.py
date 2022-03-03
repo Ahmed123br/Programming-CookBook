@@ -7,12 +7,11 @@ class yrange:
         return self
 
     def __next__(self):
-        if self.i < self.n:
-            i = self.i
-            self.i += 1
-            return i
-        else:
+        if self.i >= self.n:
             raise StopIteration()
+        i = self.i
+        self.i += 1
+        return i
 
 
 class ZRange: # ITERABLE

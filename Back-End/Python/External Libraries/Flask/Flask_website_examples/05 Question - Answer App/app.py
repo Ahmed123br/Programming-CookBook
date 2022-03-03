@@ -68,7 +68,7 @@ def signup():
 def login():
     user = get_current_user()
     error = None
-    
+
     if request.method == 'POST':
         db = get_db()
 
@@ -76,9 +76,7 @@ def login():
         password = request.form['password']
         # Q_004
         user_cur = db.execute(login_query, [name])
-        user_result = user_cur.fetchone()
-        # Check Credentials
-        if user_result:
+        if user_result := user_cur.fetchone():
             if check_password_hash(user_result['password'], password):
                 session['user'] = user_result['name']
                 return redirect(url_for('index'))
@@ -212,25 +210,24 @@ def promote(user_id):
         return redirect(url_for('login'))
     if user['admin'] == 0:
         return redirect(url_for('index'))
-   
+
     db = get_db()
     # Q_13
     get_access_level = db.execute(check_access_level, [user_id])
     get_access = get_access_level.fetchone()
     if get_access[2] == 1:
         flash("Admin can't be promoted as Expert...Admin has all expert's privilages already!")
-        return redirect(url_for('users'))
     elif get_access[1] == 1:
         # Q_14
         promote_exp = db.execute(remove_promotion, [user_id])
         db.commit()
         flash("Expert Downgraded to User")
-        return redirect(url_for('users'))
     else:
         # Q_15
         promote_exp = db.execute(add_promotion, [user_id])
         db.commit()
-        return redirect(url_for('users'))
+
+    return redirect(url_for('users'))
 
 @app.route('/useradd', methods=['GET', 'POST'])
 def new_user():

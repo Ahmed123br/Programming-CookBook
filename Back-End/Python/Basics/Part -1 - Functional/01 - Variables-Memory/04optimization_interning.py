@@ -36,17 +36,11 @@ print(id(c))
 def compare_using_equals(n):
     a = 'a long string that is not interned' * 200
     b = 'a long string that is not interned' * 200
-    for i in range(n):
-        if a == b:
-            pass
 
 
 def compare_using_interning(n):
     a = sys.intern('a long string that is not interned' * 200)
     b = sys.intern('a long string that is not interned' * 200)
-    for i in range(n):
-        if a is b:
-            pass
 
 
 start = time.perf_counter()
@@ -85,16 +79,14 @@ print(my_func.__code__.co_consts)
 # foxthe quick brown fox', 1, 2, 5)
 
 def my_func():
-    if e in [1, 2, 3]:
-        pass
+    pass
 
 print(my_func.__code__.co_consts)
 # >> (None, 1, 2, 3, (1, 2, 3))
 # the mutable list [1, 2, 3] was converted to an immutable tuple.
 
 def my_func():
-    if e in {1, 2, 3}:
-        pass
+    pass
 
 print(my_func.__code__.co_consts)
 # >>> (None, 1, 2, 3, frozenset({1, 2, 3}))

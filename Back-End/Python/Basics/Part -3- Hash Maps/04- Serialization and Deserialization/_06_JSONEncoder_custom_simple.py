@@ -66,10 +66,7 @@ class CustomEncoder(json.JSONEncoder):
                          )
 
     def default(self, arg):
-        if isinstance(arg, datetime):
-            return arg.isoformat()
-        else:
-            return super().default(arg)
+        return arg.isoformat() if isinstance(arg, datetime) else super().default(arg)
 
 d = {
     'time': datetime.utcnow(),
@@ -89,7 +86,7 @@ print(json.dumps(d, cls=CustomEncoder))
 class CustomEncoder(json.JSONEncoder):
     def default(self, arg):
         if isinstance(arg, datetime):
-            obj = dict(
+            return dict(
                 datatype="datetime",
                 iso=arg.isoformat(),
                 date=arg.date().isoformat(),
@@ -101,7 +98,6 @@ class CustomEncoder(json.JSONEncoder):
                 minutes=arg.minute,
                 seconds=arg.second
             )
-            return obj
         else:
             return super().default(arg)
 

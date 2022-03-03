@@ -13,7 +13,7 @@ print(sys.getsizeof(2**1000))
 # 160
 
 def calc(a):
-    for i in range(10_000_000):
+    for _ in range(10_000_000):
         a * 2
 
 
